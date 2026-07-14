@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 0.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 00</div>
+        <div style="font-size: 12px; color: #666;">Exordium: Ovid &amp; the Metamorph&#333;s&#275;s</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 0.01 &middot; Day 1 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Where Latin 2 begins</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Ovid &amp; the Metamorph&#333;s&#275;s</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 0.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> A New Year Begins &mdash; Meet Ovid</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 35 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Latin 2 begins exactly where Latin 1 ended &mdash; and this week, before anything new, we get our bearings.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You finished Latin 1 with the full active indicative system across all five declensions. Latin 2 will add the <strong>passive voice</strong>, but not yet. This orientation module does two jobs: it brings the grammar you already know back to the front of your mind, and it introduces the poet whose work is the spine of the entire year &mdash; <strong>Ovid</strong>, and his great poem, the <span class="lat">Metamorph&#333;s&#275;s</span>. Today is pure orientation: no drills, no paradigm to memorize &mdash; just the map of where we are going.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> place Ovid in Roman literary history and describe what the <span class="lat">Metamorph&#333;s&#275;s</span> is.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain what Latin 2 assumes I already know, and what new grammar is coming.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THINK BEFORE YOU START <span class="pill-time">5 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">What do you already carry in?</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Latin 1 ended with the full active indicative system. Before we review it later this week, take an honest inventory.</p>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">How many tenses does the Latin active indicative have?</div>
+            <div class="widget-options">
+                <button data-response="That's right &mdash; six: present, imperfect, future, perfect, pluperfect, and future perfect. Latin 2 assumes you know all six. We'll confirm that in Lesson 0.02.">Six &mdash; present, imperfect, future, perfect, pluperfect, future perfect</button>
+                <button data-response="Not quite &mdash; the active indicative has six tenses. If that surprises you, good: that's exactly what Lesson 0.02's review is for.">Three &mdash; present, past, future</button>
+                <button data-response="Close, but there are six. You may be forgetting the future perfect (or the plain future). Lesson 0.02 lays all six out side by side.">Five &mdash; present, imperfect, future, perfect, pluperfect</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; WHO WAS OVID? <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The poet behind the whole year</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Publius Ovidius Naso &mdash; <strong>Ovid</strong> &mdash; lived from 43 BCE to 17 or 18 CE. He wrote under the emperor <strong>Augustus</strong>, in the same generation as Virgil and Horace, during the golden age of Latin poetry. Where Virgil wrote the solemn national epic of Rome, Ovid was wittier, faster, and more playful. His masterpiece is the <span class="lat">Metamorph&#333;s&#275;s</span> &mdash; a single long poem in fifteen books that gathers together dozens of Greek and Roman myths, all linked by one idea: <strong>transformation</strong>. People become trees, stars, stones, animals, rivers, and flowers.</p>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">This poem is the spine of both semesters of Latin 2. Nearly every story you read this year comes from it. Knowing what Ovid was doing &mdash; retelling the world's myths as an unbroken chain of changes &mdash; makes every passage more legible before you translate a single word.</p>
+        <div class="etym-box">
+            <div class="lbl">&#128220; THE TITLE ITSELF</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The Greek word <em>metamorph&#333;sis</em> is built from <em>meta-</em> ("change") + <em>morph&#275;</em> ("form, shape"). It literally means "a change of shape." English borrows it directly: a caterpillar's <em>metamorphosis</em> into a butterfly is exactly Ovid's subject &mdash; one form becoming another. The Latin word for that shape, <span class="lat">forma</span>, is one of this module's five vocabulary words.</p>
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; WHY START WITH A POET?</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In Latin 1 you read short made-up sentences. In Latin 2 you read adapted <em>real literature</em>. Grammar stops being the point and becomes the tool. Ovid is the author who makes that shift worth it &mdash; his stories are strange, vivid, and unforgettable.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE MAP OF THE YEAR <span class="pill-time">6 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">What you know, and what's new</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Latin 2 does not restart from scratch. Think of it as adding one large new column to a table you already know.</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4>You already have &mdash; from Latin 1</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">All six <strong>active</strong> indicative tenses<br>All five noun declensions<br>Adjective agreement<br>Core vocabulary</div>
+            </div>
+            <div class="col b">
+                <h4>Latin 2 adds &mdash; starting M01</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">The <strong>passive voice</strong> (same six tenses, new endings)<br>The PPP + <span class="lat">esse</span> perfect passive<br>Question particles (this module)<br>Reading real, adapted Ovid</div>
+            </div>
+        </div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:14px 0 6px;">Five quick checks on the big picture. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the big new topic</div>
+            <div class="widget-question">What is the major new grammar topic Latin 2 introduces?</div>
+            <div class="widget-options">
+                <button data-correct="true">the passive voice</button>
+                <button data-correct="false">the six active tenses</button>
+                <button data-correct="false">the five noun declensions</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the author</div>
+            <div class="widget-question">Who wrote the <span class="lat">Metamorph&#333;s&#275;s</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">Virgil</button>
+                <button data-correct="false">Augustus</button>
+                <button data-correct="true">Ovid</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the one idea</div>
+            <div class="widget-question">What single idea links all the stories in the <span class="lat">Metamorph&#333;s&#275;s</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">war between cities</button>
+                <button data-correct="true">transformation &mdash; one form becoming another</button>
+                <button data-correct="false">the founding of Rome</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; what you carry in</div>
+            <div class="widget-question">How many tenses does the active indicative &mdash; the system Latin 1 finished with &mdash; have?</div>
+            <div class="widget-options">
+                <button data-correct="false">three</button>
+                <button data-correct="true">six</button>
+                <button data-correct="false">four</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the emperor</div>
+            <div class="widget-question">Under which Roman emperor did Ovid write?</div>
+            <div class="widget-options">
+                <button data-correct="true">Augustus</button>
+                <button data-correct="false">Nero</button>
+                <button data-correct="false">Julius Caesar</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: why does it help to know Ovid's poem is about <em>transformation</em> before you read any of it? Think it through, then reveal one way to say it.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Because when a story suddenly turns a person into a tree, a bird, or a star, you won't be confused &mdash; you'll expect it. Transformation is Ovid's whole subject, so a strange ending is the point, not a translation error. Knowing the theme lets you read for meaning instead of second-guessing yourself.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 0.02</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you refresh the engine you already own: all six active indicative tenses at a glance, each with the one marker that gives it away. It's a review, not a reteach &mdash; and it's the last look before the passive voice arrives.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas so your progress is recorded. Then, in your own words, answer out loud: <em>who was Ovid, and what is the one idea that ties his great poem together?</em></div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU HAVE YOUR MAP</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You know where the year is headed and who your guide is. Tomorrow we make sure the grammar you carried in from Latin 1 is sharp and ready. <em>Incipi&#257;mus!</em> &mdash; let us begin!</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 0.01 &middot; Where Latin 2 begins</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct &mdash; that&rsquo;s the orientation fact. You&rsquo;re building the map of the year.'
+        : 'Not quite &mdash; look back at the overview above and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

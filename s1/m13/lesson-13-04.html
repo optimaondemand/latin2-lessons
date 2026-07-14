@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 13.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FFFCF4; border:1px solid #E4C9A8; border-top:4px solid #C7922C; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .passage .byline { font-size:11px; color:#9a7b1e; letter-spacing:.4px; text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #E4C9A8; }
+    .passage .line { font-style:italic; color:#0E1C42; font-size:17px; line-height:1.9; }
+    .passage .line .ln { font-style:normal; color:#b09a6a; font-size:12px; margin-right:8px; }
+    .gloss { background:#F4F9FC; border:1px solid #D0D9E8; border-radius:6px; padding:12px 16px; font-size:14px; color:#4a5878; line-height:1.75; margin-top:12px; }
+    .gloss strong { color:#0E1C42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 13</div>
+        <div style="font-size: 12px; color: #666;">Consolidation &mdash; Passive &amp; PAP</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 13.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Phaeth&#333;n &amp; S&#333;l</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Phaeth&#333;n &mdash; The Sun&rsquo;s Son</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 13.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Ovid &mdash; The Journey to the Sun</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Everything you rebuilt this week, now inside one connected story.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Today the passage <em>is</em> the grammar exercise. Read <em>Phaeth&#333;n ad S&#333;lem Iter Facit</em> for meaning first; then go back and do two things &mdash; name the tense of every passive verb, and classify every PAP as attributive or circumstantial. No new grammar. This is the kind of analysis you will do with every Ovidian passage from here forward.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read a connected Ovidian passage and identify every passive verb (with tense) and every PAP.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> retell Phaethon&rsquo;s journey and explain the Stygian oath and the theme of <span class="lat">superbia</span>.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THE PASSAGE <span class="pill-time">18 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Phaeth&#333;n ad S&#333;lem Iter Facit</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Phaethon has been mocked by a classmate who denied that Sol was truly his father. Furious and desperate, he travels to the eastern edge of the world to find his father&rsquo;s palace and demand proof &mdash; and more. Read for meaning first; then go back and mark every passive verb (name its tense) and every PAP (attributive or circumstantial).</p>
+        <div class="passage">
+            <div class="byline">After Ovid, <em>Metamorph&#333;s&#275;s</em> II &mdash; adapted for Latin 2</div>
+            <div class="line">
+                <span class="ln">1</span>Phaeth&#333;n, f&#299;lius S&#333;lis esse d&#299;c&#275;b&#257;tur; sed &#257; soci&#299;s r&#299;d&#275;b&#257;tur et n&#333;n cr&#275;d&#275;b&#257;tur.<br>
+                <span class="ln">2</span>Puer, &#257; soci&#299;s superbus appell&#257;tus, ad patrem suum iter f&#275;cit.<br>
+                <span class="ln">3</span>Pal&#257;tium S&#333;lis, in orient&#275; positum, ex aur&#333; et gemm&#299;s aedific&#257;tum erat.<br>
+                <span class="ln">4</span>Phaeth&#333;n, i&#257;nuam auream vid&#275;ns, attonitus substitit; t&#257;le aedificium numquam v&#299;derat.<br>
+                <span class="ln">5</span>S&#333;l, in soli&#333; aure&#333; sed&#275;ns, Phaethontem v&#299;dit et agn&#333;vit.<br>
+                <span class="ln">6</span>&ldquo;C&#363;r h&#363;c ven&#299;st&#299;?&rdquo; inquit S&#333;l. &ldquo;&#256; mult&#299;s homin&#301;bus haec via n&#333;n tent&#257;tur.&rdquo;<br>
+                <span class="ln">7</span>Phaeth&#333;n, prec&#275;s su&#257;s d&#299;c&#275;ns, &#333;r&#257;vit: &ldquo;&#332; pater, currus tuus mihi d&#257;b&#257;tur in somn&#299;s!&rdquo;<br>
+                <span class="ln">8</span>S&#333;l autem mov&#275;b&#257;tur prec&#301;bus f&#299;li&#299;; i&#363;r&#257;vit per Stygem s&#275; quidquid Phaeth&#333;n vellet dat&#363;rum esse.<br>
+                <span class="ln">9</span>&ldquo;Equ&#299; me&#299; n&#333;n regentur &#257; t&#275;,&rdquo; inquit S&#333;l; &ldquo;iter arduum est et &#257; de&#299;s ips&#299;s tim&#275;tur.&rdquo;<br>
+                <span class="ln">10</span>Phaeth&#333;n, verba patris n&#333;n audi&#275;ns, &#299;nst&#257;bat: currus S&#333;lis &#257; s&#275; ag&#299; d&#275;b&#275;bat.
+            </div>
+            <div class="gloss">
+                <strong>Glossary:</strong>&nbsp;
+                <span class="lat">d&#299;c&#275;b&#257;tur</span> &mdash; was said to be (impf. pass. of <span class="lat">d&#299;c&#333;</span>) &middot;
+                <span class="lat">cr&#275;d&#275;b&#257;tur</span> &mdash; was believed (impf. pass.) &middot;
+                <span class="lat">appell&#257;tus</span> &mdash; having been called (PPP of <span class="lat">appell&#333;</span>) &middot;
+                <span class="lat">orient&#275;</span> &mdash; the east (abl.) &middot;
+                <span class="lat">positum / aedific&#257;tum erat</span> &mdash; had been placed / built (plupf. pass.) &middot;
+                <span class="lat">i&#257;nuam</span> &mdash; door, gate (acc.) &middot;
+                <span class="lat">soli&#333;</span> &mdash; throne (abl.) &middot;
+                <span class="lat">agn&#333;vit</span> &mdash; recognized (perf. act.) &middot;
+                <span class="lat">tent&#257;tur</span> &mdash; is attempted (pres. pass.) &middot;
+                <span class="lat">in somn&#299;s</span> &mdash; in dreams &middot;
+                <span class="lat">per Stygem</span> &mdash; by the Styx (the unbreakable divine oath) &middot;
+                <span class="lat">dat&#363;rum esse</span> &mdash; that he would give (fut. act. inf., indirect statement) &middot;
+                <span class="lat">regentur</span> &mdash; will be ruled (fut. pass. of <span class="lat">reg&#333;</span>) &middot;
+                <span class="lat">tim&#275;tur</span> &mdash; is feared (pres. pass.) &middot;
+                <span class="lat">&#299;nst&#257;bat</span> &mdash; was insisting (impf. of <span class="lat">&#299;nst&#333;</span>) &middot;
+                <span class="lat">ag&#299; d&#275;b&#275;bat</span> &mdash; ought to be driven (pass. inf. of <span class="lat">ag&#333;</span> with <span class="lat">d&#275;b&#275;bat</span>)
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE STORY BEHIND IT <span class="pill-time">10 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; HYBRIS AND THE UNBREAKABLE OATH</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Sol&rsquo;s fateful mistake is swearing by the <strong>Styx</strong> before he hears what Phaethon wants. The Stygian oath is the one divine promise that cannot be broken &mdash; not even by Jupiter. Ovid frames it as a moment of parental love overriding divine prudence.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">When Phaethon finally reveals that he wants to drive the sun-chariot, Sol <em>cannot refuse</em>. The rest of <em>Metamorph&#333;s&#275;s</em> II is the disaster that follows. Notice how Ovid&rsquo;s Phaethon is not simply villainous &mdash; he is a son desperate to prove his parentage, and his <span class="lat">superbia</span> is understandable even as it leads to catastrophe.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; PASSIVE AND PARTICIPLE, TOGETHER</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Watch the double layer at work. The passive verbs (<span class="lat">r&#299;d&#275;b&#257;tur, mov&#275;b&#257;tur, regentur, tim&#275;tur</span>) show what happens <em>to</em> Phaethon and around him. The participles (<span class="lat">vid&#275;ns, sed&#275;ns, d&#299;c&#275;ns, audi&#275;ns</span>) keep every figure in motion at the moment of the main verb. Reading both at once is the whole art of reading Ovid.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the story, some test your grammar reading of the passage. Take them slowly. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">Why does Phaethon travel to the palace of the Sun?</div>
+            <div class="widget-options">
+                <button data-correct="false">to escape his mocking classmates</button>
+                <button data-correct="true">to find his father and prove Sol is truly his father</button>
+                <button data-correct="false">to ask Sol for gold and gems</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; grammar in context</div>
+            <div class="widget-question">In line 1, <span class="lat">r&#299;d&#275;b&#257;tur</span> (&ldquo;he was laughed at&rdquo;) is what tense?</div>
+            <div class="widget-options">
+                <button data-correct="true">imperfect passive</button>
+                <button data-correct="false">present passive</button>
+                <button data-correct="false">pluperfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; grammar in context</div>
+            <div class="widget-question">In line 4, <span class="lat">i&#257;nuam auream vid&#275;ns</span> &mdash; the word <span class="lat">vid&#275;ns</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">a perfect passive participle</button>
+                <button data-correct="false">an imperfect passive verb</button>
+                <button data-correct="true">a circumstantial PAP (with object <span class="lat">i&#257;nuam</span>)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">What does Sol swear by &mdash; the oath he cannot break?</div>
+            <div class="widget-options">
+                <button data-correct="false">his own chariot</button>
+                <button data-correct="true">the river Styx</button>
+                <button data-correct="false">the light of the sky</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; grammar in context</div>
+            <div class="widget-question">In line 9, <span class="lat">Equ&#299; me&#299; n&#333;n regentur &#257; t&#275;</span> &mdash; the verb <span class="lat">regentur</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">present passive</button>
+                <button data-correct="true">future passive</button>
+                <button data-correct="false">perfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which line gave you the most trouble on the first read?</div>
+            <div class="widget-options">
+                <button data-response="Line 3 packs two pluperfect passives (positum erat, aedific&#257;tum erat). Read PPP + erat as a single unit and it settles: 'had been placed / built.'">Line 3 &mdash; the palace description</button>
+                <button data-response="Line 8 is dense: mov&#275;b&#257;tur (impf. pass.) plus an indirect statement (dat&#363;rum esse). Handle the passive verb first, then unpack the oath clause.">Line 8 &mdash; the oath</button>
+                <button data-response="Line 10 chains a participle (audi&#275;ns) with a passive infinitive (ag&#299;). Take audi&#275;ns as the circumstance, then read ag&#299; d&#275;b&#275;bat as 'ought to be driven.'">Line 10 &mdash; the ending</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit before you look: fully translate line 9 (<span class="lat">&ldquo;Equ&#299; me&#299; n&#333;n regentur &#257; t&#275;&hellip; iter arduum est et &#257; de&#299;s ips&#299;s tim&#275;tur&rdquo;</span>) and name the tense of each passive verb. Then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><em>&ldquo;My horses will not be controlled by you; the journey is steep and is feared even by the gods themselves.&rdquo;</em> &mdash; <span class="lat">regentur</span> is <strong>future passive</strong> (3rd pl. of <span class="lat">reg&#333;</span>; subject <span class="lat">equ&#299;</span>, agent <span class="lat">&#257; t&#275;</span>); <span class="lat">tim&#275;tur</span> is <strong>present passive</strong> (3rd sg. of <span class="lat">time&#333;</span>; agent <span class="lat">&#257; de&#299;s</span>).</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 13.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you&rsquo;re ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the passage in three sentences, and use the words <span class="lat">superbia</span> and <span class="lat">Styx</span> at least once.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ OVID TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Ten sentences of a real myth &mdash; passive and participle carrying the meaning together. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 13.04 &middot; Reading &mdash; Phaeth&#333;n &amp; S&#333;l</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (or check the signal against your cards) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

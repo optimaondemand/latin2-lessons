@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 10.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .vocab { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .vocab th { background:#5A2A82; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .vocab td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .vocab tr:nth-child(even) td { background:#F6F1FA; }
+    .vocab .vl { font-style:italic; color:#0E1C42; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Sem 1 &middot; Module 10</div>
+        <div style="font-size: 12px; color: #666;">M&#299;das, II</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 10.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">All six tenses &amp; vocabulary</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Midas &amp; the Golden Curse</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 10.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Complete Passive System &mdash; and Eight New Words</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 38 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">This is the capstone. All six passive tenses in one table &mdash; and the vocabulary you'll need for the story.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You now possess <strong>every tense of the Latin passive indicative</strong>. Today you set them side by side in a master table, learn a place where the future perfect naturally appears (<span class="lat">postquam</span> and <span class="lat">cum</span> + future clauses), and pick up the module's <strong>eight new words</strong> so you're ready to read the Midas story tomorrow.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify any of the six passive indicative tenses from a given form.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize the future perfect in a <span class="lat">postquam</span> or <span class="lat">cum</span> + future clause.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recall the eight new words of Module 10.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; THE MASTER TABLE <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">All six passive tenses of <span class="lat">am&#257;re</span></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Study this carefully &mdash; it is your reference for every Latin text from here forward. Notice the split: the first three build with passive endings; the last three build with PPP + a form of <span class="lat">esse</span>.</p>
+        <table class="gtable">
+            <thead><tr><th>Tense</th><th>3rd sg. m. form</th><th>Pattern</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>Present</td><td><span class="lat">am&#257;<span class="ending">tur</span></span></td><td>stem + passive ending</td><td>he is (being) loved</td></tr>
+                <tr><td>Imperfect</td><td><span class="lat">am&#257;b&#257;<span class="ending">tur</span></span></td><td>stem + b&#257; + passive ending</td><td>he was being loved</td></tr>
+                <tr><td>Future</td><td><span class="lat">am&#257;bi<span class="ending">tur</span></span></td><td>stem + bi/bu + passive ending</td><td>he will be loved</td></tr>
+                <tr><td>Perfect</td><td><span class="lat">am&#257;tus <span style="color:#0E1C42;font-weight:700;">est</span></span></td><td>PPP + <span class="lat">est</span></td><td>he was / has been loved</td></tr>
+                <tr><td>Pluperfect</td><td><span class="lat">am&#257;tus <span style="color:#0E1C42;font-weight:700;">erat</span></span></td><td>PPP + <span class="lat">erat</span></td><td>he had been loved</td></tr>
+                <tr><td style="color:#C0392B;font-weight:700;">Future Perfect</td><td><span class="lat">am&#257;tus <span class="ending">erit</span></span></td><td>PPP + <span class="lat">erit</span></td><td>he will have been loved</td></tr>
+            </tbody>
+        </table>
+        <div class="virtue-box">
+            <div class="lbl">&#127942; MILESTONE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">This module marks the end of the passive indicative system. You now have all six tenses of the passive &mdash; exactly mirroring the six active tenses from Latin 1. From Module 11 onward, Latin 2 introduces the <strong>participial system</strong> (verbal adjectives): the PPP you already know, the Present Active Participle (M11), and the Future Active Participle (M14). The passive voice is the foundation on which they all rest.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 2 &middot; WHERE THE FUTURE PERFECT LIVES <span class="pill-time">6 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">Postquam</span> and <span class="lat">cum</span> + future clauses</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">When a future event must be <em>completed before</em> another future event happens, Latin uses the future perfect in the first clause. English is looser &mdash; it often uses the simple future or present for both &mdash; but Latin is precise. Watch for this structure in tomorrow's passage.</p>
+        <div class="sentence"><span class="s-lat">Postquam M&#299;d&#257;s lav&#257;tus erit, maledictum sol&#363;tum erit.</span><p class="parse">After Midas will have been washed, the curse will have been lifted. &mdash; Both events are future, but the washing must complete first, so the first clause is future perfect.</p></div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128221; PART 3 &middot; VOCABULARY <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Eight new words</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">These eight words appear in tomorrow's passage and recur in later modules. Study them now.</p>
+        <table class="vocab">
+            <thead><tr><th>Latin</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td class="vl">fl&#275;&#333;, fl&#275;re, fl&#275;v&#299;</td><td>to weep, cry</td></tr>
+                <tr><td class="vl">paenit&#275;t, paenitu&#299;</td><td>to repent, be sorry (impersonal)</td></tr>
+                <tr><td class="vl">lav&#333;, lav&#257;re, l&#257;v&#299;</td><td>to wash, bathe</td></tr>
+                <tr><td class="vl">&#333;r&#333;, -&#257;re, -&#257;v&#299;</td><td>to pray, beg, plead</td></tr>
+                <tr><td class="vl">supplic&#333;, -&#257;re</td><td>to kneel, supplicate</td></tr>
+                <tr><td class="vl">aureus, -a, -um</td><td>golden, made of gold</td></tr>
+                <tr><td class="vl">aet&#257;s, aet&#257;tis</td><td>f. &mdash; age, era, time period</td></tr>
+                <tr><td class="vl">har&#275;na, -ae</td><td>f. &mdash; sand, gravel</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; NOTES</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Paenit&#275;t</span> is impersonal &mdash; no personal subject. The idiom <span class="lat">m&#275; paenitet</span> (literally &ldquo;it repents me&rdquo;) = &ldquo;I am sorry / I repent.&rdquo; <span class="lat">Aureus</span> is a 2-1-2 adjective like <span class="lat">bonus</span>. <span class="lat">Aet&#257;s</span> is 3rd declension; genitive <span class="lat">aet&#257;tis</span>.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; NAME THE TENSE <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps across the whole passive system &mdash; and one vocab check. Read the <span class="lat">esse</span> form (or the ending) first, then decide the tense.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the tense</div>
+            <div class="widget-question"><span class="lat">M&#299;d&#257;s laud&#257;b&#257;tur &#257; c&#299;vibus su&#299;s.</span> The passive verb <span class="lat">laud&#257;b&#257;tur</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">present passive</button>
+                <button data-correct="true">imperfect passive</button>
+                <button data-correct="false">perfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the tense</div>
+            <div class="widget-question"><span class="lat">Har&#275;na aurea in r&#299;p&#257; relicta erit.</span> The verb <span class="lat">relicta erit</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">perfect passive</button>
+                <button data-correct="false">pluperfect passive</button>
+                <button data-correct="true">future perfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the tense</div>
+            <div class="widget-question"><span class="lat">M&#299;d&#257;s &#257; fluvi&#333; lav&#257;tus est.</span> The verb <span class="lat">lav&#257;tus est</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">perfect passive</button>
+                <button data-correct="false">present passive</button>
+                <button data-correct="false">future perfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the tense</div>
+            <div class="widget-question"><span class="lat">Malum d&#333;num &#257; r&#275;ge opt&#257;tur.</span> The verb <span class="lat">opt&#257;tur</span> is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">imperfect passive</button>
+                <button data-correct="false">future passive</button>
+                <button data-correct="true">present passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question">What does <span class="lat">fl&#275;re</span> mean?</div>
+            <div class="widget-options">
+                <button data-correct="false">to wash</button>
+                <button data-correct="false">to pray</button>
+                <button data-correct="true">to weep</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Cover the master table and name all six passive tenses of <span class="lat">am&#257;re</span> in the 3rd sg. masculine, in order. Say them, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><span class="lat">am&#257;tur</span> (present), <span class="lat">am&#257;b&#257;tur</span> (imperfect), <span class="lat">am&#257;bitur</span> (future), <span class="lat">am&#257;tus est</span> (perfect), <span class="lat">am&#257;tus erat</span> (pluperfect), <span class="lat">am&#257;tus erit</span> (future perfect). Three built with endings, three built with PPP + <span class="lat">esse</span>.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 10.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read the story's resolution &mdash; <span class="lat">M&#299;d&#257;s Lav&#257;tur</span> &mdash; watching every passive tense you now know appear in real Latin, and learning why the river Pactolus ran with gold.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then quiz yourself on the eight new words &mdash; cover the English column and give each meaning out loud.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE WHOLE SYSTEM AT ONCE</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Every passive tense in one table, and the words to read the story &mdash; you're ready for real Latin. Tomorrow the curse finally lifts. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 10.03 &middot; All six tenses &amp; vocabulary</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you identified the passive form correctly.'
+        : 'Not quite — check the form of esse (or the ending) and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

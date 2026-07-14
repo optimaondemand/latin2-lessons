@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 17.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .nextlist .row { display:flex; align-items:flex-start; gap:14px; margin-bottom:16px; }
+    .nextlist .n { min-width:34px; height:34px; border-radius:50%; background:#0E1C42; color:#fff; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .nextlist .pts { display:inline-block; background:#5A2A82; color:#fff; font-size:12px; border-radius:12px; padding:2px 9px; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 17</div>
+        <div style="font-size: 12px; color: #666;">F&#299;n&#257;l&#275;s &mdash; Final Assessment</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 17.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The myths of transformation</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Ovid &amp; Transformation</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 17.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Ovid &mdash; The Shapes of Change</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus story equals reading. Today the passive and the participles carry the myths that gave this semester its name.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The theme of Semester 1 was <em>mūt&#257;ti&#333;</em> &mdash; transformation &mdash; drawn from Ovid's <em>Metamorph&#333;s&#275;s</em>. This whole semester you read of people turned into trees, flowers, animals, and stone. Today you gather those myths back up, read Latin sentences that use your passive and participle grammar, and get ready to write your own transformation. No new grammar &mdash; today you <em>use</em> everything you reviewed.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> retell the semester's key transformation myths and name what each character becomes.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read Latin sentences that use passive verbs and participles, and translate them.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ ALONG <span class="pill-time">13 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Sentences you can now read</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read each aloud. Find the subject, spot the passive verb or participle, and sort any &ldquo;by&rdquo; phrase into agent or means. The gray line is your parse and translation &mdash; try it yourself before you read it.</p>
+        <div class="sentence"><span class="s-lat">Daphn&#275; ab Apolline am&#257;b&#257;tur.</span><p class="parse">Daphne was being loved by Apollo. &mdash; imperfect passive <span class="lat">am&#257;b&#257;tur</span> &middot; <span class="lat">ab Apolline</span> = personal agent.</p></div>
+        <div class="sentence"><span class="s-lat">Nympha in laurum mūt&#257;ta est.</span><p class="parse">The nymph was changed into a laurel tree. &mdash; perfect passive <span class="lat">mūt&#257;ta est</span> (PPP + <span class="lat">est</span>).</p></div>
+        <div class="sentence"><span class="s-lat">Narcissus im&#257;gine su&#257; d&#275;ceptus est.</span><p class="parse">Narcissus was deceived by his own reflection. &mdash; perfect passive <span class="lat">d&#275;ceptus est</span> &middot; <span class="lat">im&#257;gine</span> = means (a thing, plain ablative).</p></div>
+        <div class="sentence"><span class="s-lat">Arachn&#275;, &#257; de&#257; victa, in ar&#257;neam versa est.</span><p class="parse">Arachne, conquered by the goddess, was turned into a spider. &mdash; PPP <span class="lat">victa</span> (participial phrase) + perfect passive <span class="lat">versa est</span>.</p></div>
+        <div class="sentence"><span class="s-lat">Actae&#333;n &#257; canibus su&#299;s nec&#257;tus est.</span><p class="parse">Actaeon was killed by his own dogs. &mdash; perfect passive <span class="lat">nec&#257;tus est</span> &middot; <span class="lat">&#257; canibus</span> = personal agent (living creatures).</p></div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; READING TIP</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In a transformation myth the passive is everywhere &mdash; because the whole point is that something is <em>done to</em> the character: they are changed, deceived, conquered, turned. When you see <span class="lat">-tus/-a/-um + est</span>, expect &ldquo;was ___ed.&rdquo;</p>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Now that you've read a few, which part of a transformation sentence do you find yourself looking for first?</div>
+            <div class="widget-options">
+                <button data-response="A solid instinct. In these myths the passive verb usually IS the transformation — 'was changed,' 'was turned,' 'was deceived.' Finding it first tells you what happened to the character.">The passive verb &mdash; what was done</button>
+                <button data-response="Good habit. The 'by' phrase tells you the force behind the change — a god (personal agent, á/ab) or a thing like a reflection or arrow (means, plain ablative). It answers 'who or what caused this?'">The &ldquo;by&rdquo; phrase &mdash; who or what caused it</button>
+                <button data-response="Smart. The subject is the character being transformed — the one the whole sentence happens to. Anchor on it, then read outward to the verb and the agent.">The subject &mdash; who is being changed</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE MYTHS, GATHERED <span class="pill-time">14 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; OVID, <em>METAMORPH&#332;S&#274;S</em> &middot; THE SEMESTER'S MYTHS</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;"><strong>Daphne</strong>, fleeing Apollo, prays to escape and is changed into a laurel tree. <strong>Narcissus</strong>, in love with his own reflection, wastes away and becomes the flower that bears his name. <strong>Arachne</strong>, a weaver proud enough to challenge Minerva, is turned into a spider. <strong>Pyramus and Thisbe</strong>, forbidden lovers, die by the mulberry tree &mdash; whose white fruit turns red with their blood.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;"><strong>Midas</strong>, granted that all he touches turn to gold, nearly starves in his own wish. <strong>Actaeon</strong>, who saw Diana bathing, is changed into a stag and torn apart by his own hounds. <strong>Phaethon</strong>, unable to steer the sun-chariot of his father, is struck down by Jupiter to save the earth. <strong>Io</strong>, loved by Jupiter, is changed into a heifer to hide her from Juno. Eight stories, one pattern: a person becomes something else.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; THE MEANING OF <em>MŪT&#256;TI&#332;</em></div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In Ovid, transformation is never random. It reveals something already true &mdash; Daphne's flight becomes a tree's stillness, Narcissus's self-love becomes a flower bent over the water, Arachne's pride becomes endless weaving. Change is the mask pulled away. That is the idea at the heart of the whole semester &mdash; and the idea your own Transformation Story should carry.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">13 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Six checks &mdash; some test the myths, some test your Latin reading. Take them slowly; the point is to prove you can both read the sentences and follow the tales. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; who becomes what</div>
+            <div class="widget-question">Into what is Daphne transformed?</div>
+            <div class="widget-options">
+                <button data-correct="false">a spider</button>
+                <button data-correct="true">a laurel tree</button>
+                <button data-correct="false">a heifer</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; who becomes what</div>
+            <div class="widget-question">Arachne is turned into a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">spider</button>
+                <button data-correct="false">flower</button>
+                <button data-correct="false">stag</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Translate: <span class="lat">Nympha in laurum mūt&#257;ta est.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">The nymph changes the laurel tree</button>
+                <button data-correct="false">The nymph will change into a laurel tree</button>
+                <button data-correct="true">The nymph was changed into a laurel tree</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agent or means?</div>
+            <div class="widget-question">In <span class="lat">Narcissus im&#257;gine su&#257; d&#275;ceptus est</span>, the word <span class="lat">im&#257;gine</span> (reflection) is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">personal agent (needs <span class="lat">&#257;/ab</span>)</button>
+                <button data-correct="true">means (a thing, plain ablative)</button>
+                <button data-correct="false">the direct object</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; spot the participle</div>
+            <div class="widget-question">In <span class="lat">Arachn&#275;, &#257; de&#257; victa, ...</span>, the word <span class="lat">victa</span> is which participle?</div>
+            <div class="widget-options">
+                <button data-correct="true">PPP &mdash; &ldquo;having been conquered&rdquo;</button>
+                <button data-correct="false">PAP &mdash; &ldquo;conquering&rdquo;</button>
+                <button data-correct="false">FAP &mdash; &ldquo;about to conquer&rdquo;</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the theme</div>
+            <div class="widget-question">In Ovid, a transformation usually&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">happens for no reason at all</button>
+                <button data-correct="false">always rewards the character</button>
+                <button data-correct="true">reveals something already true about the character</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: pick one myth and explain how the transformation &ldquo;fits&rdquo; the character. Think it through, then reveal one example.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">One good answer: <strong>Narcissus.</strong> He could love only his own reflection, so he becomes the narcissus flower &mdash; a bloom that leans over still water, forever gazing down. The change makes his inner flaw visible and permanent. (Daphne's flight into stillness, or Arachne's pride into endless weaving, work just as well.)</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 17.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole week together with mixed practice &mdash; then this page hands you off to the module's graded work: the S1 Final Exam, the Transformation Story, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then start planning your <strong>Transformation Story</strong>: pick a character, decide what they become and <em>why</em>, and sketch a beginning, middle, and end &mdash; the Ovidian arc. Aim for at least two passive verbs and one participial phrase.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ OVID TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real myths, real Latin &mdash; passive verbs and participles carrying stories of change. One more day of practice and the semester is yours to close.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 17.04 &middot; The myths of transformation</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the passage or the myth summary and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

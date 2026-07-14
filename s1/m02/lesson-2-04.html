@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 2.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF9F4; border:1px solid #E4DCC9; border-top:3px solid #C7922C; border-radius:8px; padding:16px 20px; margin:12px 0; }
+    .passage .ln { color:#9a7b1e; font-size:12px; font-style:normal; margin-right:8px; }
+    .passage .pl { font-style:italic; color:#0E1C42; font-size:17px; line-height:1.9; }
+    .gloss { background:#F4F6FA; border:1px solid #D0D9E8; border-radius:6px; padding:12px 16px; font-size:14px; color:#4a5570; line-height:1.7; margin-top:10px; }
+    .gloss strong { color:#0E1C42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 02</div>
+        <div style="font-size: 12px; color: #666;">The Passive Voice, II</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 2.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Daphne M&#363;t&#257;tur</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Apollo &amp; Daphne</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 2.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Latin &mdash; The Girl Becomes a Tree</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus vocabulary equals reading. Today the pieces click together &mdash; and a chase ends in a miracle.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">No new grammar today: you <em>use</em> what you built. You will read <span class="lat">Daphne M&#363;t&#257;tur</span>, adapted from Book I of Ovid's <span class="lat">Metamorph&#333;s&#275;s</span> &mdash; the prayer to her father, the bark closing over her skin, the branches spreading from her arms, and Apollo's claim on the laurel forever. The passive voice is everywhere here, because Daphne is the one being changed.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read a connected Latin passage, identifying passive forms across both conjugations and tenses.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> retell Daphne's transformation and explain the origin of the laurel crown.</div>
+        </div>
+    </div>
+
+    <!-- PART 1: PASSAGE -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">18 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">Daphne M&#363;t&#257;tur</span></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read the passage aloud. As you go, hunt for every 2nd conjugation passive and every imperfect passive form &mdash; they carry the transformation. Use the glossary below for the words you have not formally met.</p>
+        <div class="passage">
+            <div style="font-size:12px;color:#9a7b1e;letter-spacing:.4px;margin-bottom:10px;">AFTER OVID, <em>METAMORPH&#332;S&#274;S</em> I &mdash; ADAPTED FOR LATIN 2</div>
+            <div class="pl">
+                <span class="ln">1</span>Apollo Daphnen per agr&#333;s et silv&#257;s peteb&#257;t. Daphne, virg&#333; pulcherrima, fugere n&#333;n iam potest &mdash; fessa erat.<br>
+                <span class="ln">2</span>Tum Daphne ad ripam fl&#363;minis P&#275;naei v&#275;nit et patrem suum &#333;r&#257;vit: &ldquo;Pater, adiuv&#257; m&#275;! M&#363;t&#257; formam meam et m&#275; serv&#257;!&rdquo;<br>
+                <span class="ln">3</span>Statim prec&#275;s virginis &#257; patre audi&#275;bantur et corpus eius subit&#333; m&#363;t&#257;b&#257;tur.<br>
+                <span class="ln">4</span>Ped&#275;s eius in radic&#275;s m&#363;t&#257;bantur; cortex tenuis corpus iam ten&#275;b&#257;tur et teg&#275;bat.<br>
+                <span class="ln">5</span>Cr&#299;n&#275;s eius in foli&#257; m&#363;t&#257;bantur; r&#257;m&#299; ubi bracchia erant subit&#333; vid&#275;bantur.<br>
+                <span class="ln">6</span>Apollo iam laurum ten&#275;bat. Pectus arboris manibus tang&#275;bat et sub cortice cor mov&#275;r&#299; senti&#275;bat.<br>
+                <span class="ln">7</span>Tum Apollo dixit: &ldquo;Quoniam coniunx mea esse n&#333;n potes, laurus mea erit. C&#333;ma mea, cithara mea, pharetraque me&#257; laur&#333; orn&#257;buntur.&rdquo;<br>
+                <span class="ln">8</span>Ex ill&#333; di&#275; laurus ab Apolline semper am&#257;b&#257;tur et &#257; victoribus gest&#257;ta est. S&#299;c fl&#333;s et honor Daphn&#275;s &#257; de&#333; serv&#257;ntur.
+            </div>
+        </div>
+        <div class="gloss">
+            <strong>Glossary:</strong>&nbsp;
+            <span class="lat">per agr&#333;s et silv&#257;s</span> &mdash; through the fields and forests &middot;
+            <span class="lat">n&#333;n iam</span> &mdash; no longer &middot;
+            <span class="lat">fessa erat</span> &mdash; she was exhausted &middot;
+            <span class="lat">ripa</span> &mdash; bank (of a river) &middot;
+            <span class="lat">&#333;r&#257;vit</span> &mdash; she prayed, begged &middot;
+            <span class="lat">prec&#275;s</span> &mdash; prayers (acc. pl. of <span class="lat">prex, precis</span>, f.) &middot;
+            <span class="lat">radic&#275;s</span> &mdash; roots (acc. pl. of <span class="lat">r&#257;d&#299;x</span>, f.) &middot;
+            <span class="lat">tenuis</span> &mdash; thin, fine &middot;
+            <span class="lat">teg&#275;bat</span> &mdash; was covering (impf. active of <span class="lat">teg&#333;</span>, 3rd conj.) &middot;
+            <span class="lat">foli&#257;</span> &mdash; leaves (acc. pl. of <span class="lat">folium</span>, n.) &middot;
+            <span class="lat">bracchia</span> &mdash; arms (acc. pl. of <span class="lat">bracchium</span>, n.) &middot;
+            <span class="lat">arboris</span> &mdash; of the tree (gen. sg. of <span class="lat">arbor</span>, f.) &middot;
+            <span class="lat">tang&#275;bat</span> &mdash; was touching (impf. active of <span class="lat">tang&#333;</span>, 3rd conj.) &middot;
+            <span class="lat">mov&#275;r&#299;</span> &mdash; to move, to beat (pres. passive infinitive of <span class="lat">move&#333;</span>) &middot;
+            <span class="lat">senti&#275;bat</span> &mdash; was perceiving (impf. active of <span class="lat">senti&#333;</span>, 4th conj.) &middot;
+            <span class="lat">quoniam</span> &mdash; since, because &middot;
+            <span class="lat">c&#333;ma</span> &mdash; hair, foliage &middot;
+            <span class="lat">cithara</span> &mdash; lyre &middot;
+            <span class="lat">pharetraque</span> &mdash; and the quiver &middot;
+            <span class="lat">orn&#257;buntur</span> &mdash; will be adorned (future passive &mdash; introduced in M03) &middot;
+            <span class="lat">gest&#257;ta est</span> &mdash; was worn (perfect passive &mdash; introduced in M08) &middot;
+            <span class="lat">s&#299;c</span> &mdash; thus &middot;
+            <span class="lat">honor</span> &mdash; honor, glory
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; WHERE THE PASSIVES ARE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Watch for <span class="lat">m&#363;t&#257;b&#257;tur / m&#363;t&#257;bantur</span> (1st conj. imperfect passive &mdash; &ldquo;was/were being changed&rdquo;), <span class="lat">ten&#275;b&#257;tur</span> and <span class="lat">vid&#275;bantur</span> (2nd conj. imperfect passive), and <span class="lat">audi&#275;bantur</span> (imperfect passive of a 4th conj. verb &mdash; the endings are the ones you know). The transformation unfolds <em>in stages</em>, which is exactly why Ovid reaches for the imperfect passive.</p>
+        </div>
+    </div>
+
+    <!-- PART 2: CULTURE -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; CULTURAL READING <span class="pill-time">10 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127807; THE LAUREL CROWN &middot; <span class="lat">COR&#332;NA LAUREA</span></div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Apollo's declaration in line 7 is not merely poetic &mdash; it is an origin story for one of Rome's most powerful symbols. Roman generals who won major victories were granted a <span class="lat">triumphus</span> (triumph), and the laurel wreath was central to the procession. Later, Julius Caesar and then Augustus wore laurel crowns as a permanent sign of divine favor and military victory. The tradition passed to every emperor after them &mdash; which is why nearly every imperial portrait bust wears the laurel.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">The English word <em>laureate</em> (as in &ldquo;poet laureate&rdquo; or &ldquo;Nobel laureate&rdquo;) comes straight from <span class="lat">laurus</span>, through the Latin <span class="lat">laure&#257;tus</span> (&ldquo;crowned with laurel&rdquo;) &mdash; honoring those judged supreme in their art, just as Apollo honored the tree that Daphne had become.</p>
+        </div>
+        <div class="etym-box">
+            <div class="lbl">&#128220; WORD TRAIL</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">move&#333;</span> gives us <em>move, motion, motive, emotion, promote</em>; <span class="lat">tene&#333;</span> gives us <em>tenant, tenacious, retain, contain, tenure</em>. The Latin verbs you drilled this week are hiding inside dozens of English words.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the story, some on the Latin forms. Take them slowly; prove you can both follow the tale and read the passives.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">In line 2, what does Daphne beg her father to do?</div>
+            <div class="widget-options">
+                <button data-correct="false">to kill Apollo for her</button>
+                <button data-correct="true">to change her form and save her</button>
+                <button data-correct="false">to give her a laurel crown</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">What does Daphne become?</div>
+            <div class="widget-options">
+                <button data-correct="true">a laurel tree</button>
+                <button data-correct="false">a river</button>
+                <button data-correct="false">a bird</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; parse the form</div>
+            <div class="widget-question">In line 3, <span class="lat">corpus eius m&#363;t&#257;b&#257;tur</span> &mdash; what is <span class="lat">m&#363;t&#257;b&#257;tur</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">present passive, 3rd sg</button>
+                <button data-correct="true">imperfect passive, 3rd sg (&ldquo;was being changed&rdquo;)</button>
+                <button data-correct="false">perfect active, 3rd sg</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary in context</div>
+            <div class="widget-question"><span class="lat">laurus</span> is unusual because it is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">1st declension but masculine</button>
+                <button data-correct="false">indeclinable</button>
+                <button data-correct="true">2nd declension but feminine</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; etymology</div>
+            <div class="widget-question">The English word <em>laureate</em> comes from which Latin word?</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">laurus</span></button>
+                <button data-correct="false"><span class="lat">fl&#333;s</span></button>
+                <button data-correct="false"><span class="lat">r&#257;mus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">How did reading the connected passage feel?</div>
+            <div class="widget-options">
+                <button data-response="Wonderful &mdash; that is the goal of Latin 2: reading real narrative, not just drilling forms. Try reading it once more aloud for fluency.">I could follow most of it</button>
+                <button data-response="That's normal for a first pass. Reread with the glossary open and mark each passive form &mdash; the story gets much clearer once the verbs snap into place.">The verbs slowed me down</button>
+                <button data-response="Fair &mdash; unfamiliar vocabulary is the biggest hurdle early on. Reread lines 3&ndash;5 slowly; those three lines are the whole transformation, told in imperfect passives.">The new words tripped me up</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Translate on your own: <span class="lat">Daphne &#257; radic&#299;bus patris ten&#275;tur.</span> Give the English, then name the conjugation, tense, person, and number of the verb. Reveal to check.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;Daphne is held by the roots of her father.&rdquo; The verb <span class="lat">ten&#275;tur</span> is 2nd conjugation, <strong>present passive</strong>, 3rd person singular &mdash; stem <span class="lat">ten&#275;-</span> + <span class="lat">-tur</span>. <span class="lat">Daphne</span> (nominative) is the subject; the roots do the holding.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 2.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole week together with mixed practice &mdash; then you're ready for the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell <span class="lat">Daphne M&#363;t&#257;tur</span> in three sentences &mdash; and name one passive verb from the passage along with its conjugation and tense.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ LATIN TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">A real passage from Ovid, carried by the very forms you drilled this week &mdash; and the birth of a symbol you still see on coins and crests. One more day, and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 2.04 &middot; Reading &mdash; Daphne M&#363;t&#257;tur</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (or check the verb ending) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

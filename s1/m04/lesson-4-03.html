@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 4.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 04</div>
+        <div style="font-size: 12px; color: #666;">Narcissus et Ech&#333;, II</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 4.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Agent construction &amp; vocabulary</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">The Voice That Follows</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 4.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Naming the Doer &mdash; <span class="lat">&#256;/Ab</span> + Ablative</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Today the passive gets its missing half back: the doer.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You learn the <strong>agent construction</strong> &mdash; <span class="lat">&#256;/ab</span> + the ablative &mdash; which names the person or being by whom a passive action is done. You also learn to tell it apart from a look-alike: the ablative of <em>means</em>. Then you meet the module's <strong>eight vocabulary words</strong>, all of which appear in tomorrow's reading. This is the day the grammar becomes usable.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> form and translate the agent construction, choosing <span class="lat">&#257;</span> before a consonant and <span class="lat">ab</span> before a vowel.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> distinguish an ablative of <em>agent</em> (<span class="lat">&#257;/ab</span> + abl.) from an ablative of <em>means</em> (plain ablative).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize and use the module's eight new vocabulary words.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; THE RULES <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Three things to know</h3>
+
+        <div style="background:#FFFFFF;border:1px solid #D0D9E8;border-left:4px solid #C0392B;border-radius:6px;padding:14px 16px;margin:0 0 12px;">
+            <div style="font-size:16px;color:#0e1c42;font-weight:600;margin-bottom:4px;">1. Form: <span class="lat">&#257;/ab</span> + ablative</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">Use <span class="lat">&#257;</span> before a word beginning with a <strong>consonant</strong>; use <span class="lat">ab</span> before a word beginning with a <strong>vowel or h</strong>. The ablative noun is the <strong>agent</strong> &mdash; the one performing the action.</p>
+            <div class="sentence" style="margin:6px 0;"><span class="s-lat">Ech&#333; <strong>&#257; Narciss&#333;</strong> sperni&#772;b&#257;tur.</span><p class="parse">Echo was being scorned <strong>by Narcissus</strong>. (<span class="lat">&#257;</span> + consonant)</p></div>
+            <div class="sentence" style="margin:6px 0;"><span class="s-lat">V&#333;x Ech&#333;nis <strong>ab omnibus</strong> audi&#772;b&#257;tur.</span><p class="parse">The voice of Echo was being heard <strong>by all</strong>. (<span class="lat">ab</span> + vowel)</p></div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #D0D9E8;border-left:4px solid #C0392B;border-radius:6px;padding:14px 16px;margin:0 0 12px;">
+            <div style="font-size:16px;color:#0e1c42;font-weight:600;margin-bottom:4px;">2. Agent vs. means &mdash; the critical distinction</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">The ablative of <strong>means or instrument</strong> (a thing used to do the action) takes a <em>plain</em> ablative, <strong>with no preposition</strong>. Only a person or animate being acting intentionally takes <span class="lat">&#257;/ab</span>. When you see a bare ablative without <span class="lat">&#257;/ab</span>, do not call it an agent.</p>
+            <div class="contrast" style="margin:8px 0 0;">
+                <div class="col b">
+                    <h4>Means (plain abl.)</h4>
+                    <div style="font-size:15px;color:#1a2340;line-height:1.55;"><span class="lat">Narcissus <strong>flamm&#257; caec&#257;</strong> &#363;r&#275;b&#257;tur.</span><br><span style="color:#6b7a99;font-size:13px;">was being burned <strong>by a blind flame</strong> &mdash; a thing, no <span class="lat">&#257;/ab</span></span></div>
+                </div>
+                <div class="col a">
+                    <h4>Agent (<span class="lat">&#257;/ab</span> + abl.)</h4>
+                    <div style="font-size:15px;color:#1a2340;line-height:1.55;"><span class="lat">Narcissus <strong>&#257; de&#257;</strong> p&#363;n&#299;tus est.</span><br><span style="color:#6b7a99;font-size:13px;">was punished <strong>by the goddess</strong> &mdash; a person, with <span class="lat">&#257;</span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #D0D9E8;border-left:4px solid #C0392B;border-radius:6px;padding:14px 16px;margin:0;">
+            <div style="font-size:16px;color:#0e1c42;font-weight:600;margin-bottom:4px;">3. Word order: the agent floats freely</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">The agent phrase can appear anywhere in the sentence &mdash; Latin word order is flexible, so do not assume it sits next to the verb. Find the preposition <span class="lat">&#257;/ab</span>, identify its ablative noun, and connect it to the passive verb.</p>
+            <div class="sentence" style="margin:6px 0 0;"><span class="s-lat"><strong>&#256; de&#257;</strong> saev&#257; Narcissus m&#299;r&#257;biliter <strong>p&#363;ni&#275;tur</strong>.</span><p class="parse">Narcissus will be punished in a remarkable way <strong>by the cruel goddess</strong>. (agent phrase up front, verb at the end)</p></div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128221; PART 2 &middot; THE EIGHT WORDS <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Vocabulary for the reading</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">All eight appear in tomorrow's passage. Study them now; the Vocabulary Check (3 attempts) tests these eight plus four cumulative words drawn from Modules 01&ndash;03.</p>
+        <table class="gtable">
+            <thead><tr><th>Latin</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">im&#257;g&#333;, im&#257;ginis</span> (f.)</td><td>image, likeness, reflection</td></tr>
+                <tr><td><span class="lat">v&#333;x, v&#333;cis</span> (f.)</td><td>voice, sound</td></tr>
+                <tr><td><span class="lat">corpus, corporis</span> (n.)</td><td>body</td></tr>
+                <tr><td><span class="lat">nympha, -ae</span> (f.)</td><td>nymph</td></tr>
+                <tr><td><span class="lat">spern&#333;, -ere</span></td><td>to scorn, reject, spurn</td></tr>
+                <tr><td><span class="lat">repell&#333;, -ere</span></td><td>to drive back, repel, reject</td></tr>
+                <tr><td><span class="lat">flamm&#333;, -&#257;re</span></td><td>to set ablaze, inflame</td></tr>
+                <tr><td><span class="lat">m&#299;ror, -&#257;r&#299;</span></td><td>to marvel at, be amazed by</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; A HEADS-UP ON <span class="lat">M&#298;ROR</span></div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">M&#299;ror</span> is a <strong>deponent</strong> verb &mdash; passive in form, active in meaning. You will study deponents fully in Latin 3. For now, just treat <span class="lat">m&#299;r&#257;tur</span> as &ldquo;he marvels at.&rdquo;</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; AGENT OR MEANS? <span class="pill-time">13 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the agent-vs-means distinction, some test the new vocabulary. Take them slowly; one wrong answer gives a hint, and Reset lets you retry.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agent or means?</div>
+            <div class="widget-question"><span class="lat">Ech&#333; <strong>&#257; Narciss&#333;</strong> sperni&#772;b&#257;tur.</span> The highlighted phrase is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">agent (<span class="lat">&#257;/ab</span> + abl.)</button>
+                <button data-correct="false">means (plain abl.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agent or means?</div>
+            <div class="widget-question"><span class="lat">Narcissus <strong>flamm&#257; caec&#257;</strong> &#363;r&#275;b&#257;tur.</span> The highlighted phrase is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">agent (<span class="lat">&#257;/ab</span> + abl.)</button>
+                <button data-correct="true">means (plain abl.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agent or means?</div>
+            <div class="widget-question"><span class="lat">Im&#257;g&#333; <strong>ab ips&#333; Narciss&#333;</strong> am&#257;b&#257;tur.</span> The highlighted phrase is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">agent (<span class="lat">&#257;/ab</span> + abl.)</button>
+                <button data-correct="false">means (plain abl.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question">Which word means <strong>&ldquo;reflection, image&rdquo;</strong>?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">v&#333;x</span></button>
+                <button data-correct="false"><span class="lat">corpus</span></button>
+                <button data-correct="true"><span class="lat">im&#257;g&#333;</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; choose the preposition</div>
+            <div class="widget-question">To say &ldquo;by the nymph&rdquo; (<span class="lat">nymph&#257;</span>), which form of the preposition do you use?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">ab nymph&#257;</span></button>
+                <button data-correct="true"><span class="lat">&#257; nymph&#257;</span></button>
+                <button data-correct="false"><span class="lat">nymph&#257;</span> (no preposition)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: why does <span class="lat">flamm&#257;</span> (&ldquo;by a flame&rdquo;) take no preposition, while <span class="lat">&#257; de&#257;</span> (&ldquo;by the goddess&rdquo;) does? Say your reasoning, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">A flame is a <strong>thing</strong> &mdash; an instrument or means &mdash; so it takes the plain ablative with no preposition. A goddess is a <strong>person / animate being</strong> acting intentionally, so she is an <strong>agent</strong> and takes <span class="lat">&#257;/ab</span> + ablative. Only living, willing doers get <span class="lat">&#257;/ab</span>.</div>
+        </div>
+    </div>
+
+    <!-- COMMIT-THEN-REVEAL -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128161; PART 4 &middot; TRY BEFORE YOU LOOK <span class="pill-time">3 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Translate and label</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 10px;">In your notes, translate each sentence and label the underlined phrase as <strong>agent</strong> or <strong>means</strong>. Commit before you reveal.</p>
+        <div class="sentence"><span class="s-lat">1. Ech&#333; <u>&#257; Narciss&#333;</u> sperni&#772;b&#257;tur semper.</span></div>
+        <div class="sentence"><span class="s-lat">2. Corpus <u>aqu&#257; limpid&#257;</u> v&#299;sum est.</span></div>
+        <div class="sentence"><span class="s-lat">3. Im&#257;g&#333; <u>ab ips&#333; Narciss&#333;</u> am&#257;b&#257;tur.</span></div>
+        <button class="reveal-btn">Reveal answers</button>
+        <div class="reveal-body">
+            <strong>1.</strong> &ldquo;Echo was always being scorned <em>by Narcissus</em>.&rdquo; &mdash; <span style="color:#C0392B;font-weight:700;">Agent</span> (<span class="lat">&#257;</span> + ablative of a person).<br>
+            <strong>2.</strong> &ldquo;The body was seen <em>by/with clear water</em>.&rdquo; &mdash; <span style="color:#9a7b1e;font-weight:700;">Means</span> (plain ablative, no <span class="lat">&#257;/ab</span>; water is an instrument).<br>
+            <strong>3.</strong> &ldquo;The image was being loved <em>by Narcissus himself</em>.&rdquo; &mdash; <span style="color:#C0392B;font-weight:700;">Agent</span> (<span class="lat">ab</span> before a vowel; <span class="lat">ipse</span> intensifies &ldquo;by Narcissus himself&rdquo;).
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 4.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read <span class="lat">Narcissus et Aqua</span> &mdash; a connected passage adapted from Ovid, using everything you've built: the passive, the agent construction, and these eight words.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then say out loud the rule for choosing between <span class="lat">&#257;</span> and <span class="lat">ab</span>, and name the difference between an agent and a means.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE TOOL IS IN YOUR HAND</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You can now name the doer the passive hides &mdash; and tell a doer from a mere instrument. With eight new words to go with it, you are ready to read real Latin. Tomorrow, the story.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 4.03 &middot; Agent construction &amp; vocabulary</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you read the construction right.'
+        : 'Not quite — check for the preposition &#257;/ab and whether the noun is a person or a thing, then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

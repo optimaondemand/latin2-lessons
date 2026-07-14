@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 11.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 11</div>
+        <div style="font-size: 12px; color: #666;">Present Active Participle</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 11.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Building the PAP</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Actaeon &amp; Diana</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 11.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> One Stem, One Ending: <span class="lat">-ns / -ntis</span></div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you learned what the PAP <em>means</em>. Today you learn how to build one.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The recipe is short: take the <strong>present stem</strong>, add <strong><span class="lat">-ns</span></strong> for the nominative singular and <strong><span class="lat">-ntis</span></strong> for the genitive. That <span class="lat">-ntis</span> tells you it declines as a <strong>3rd declension adjective</strong>. Unlike the PPP's three forms (<span class="lat">-us, -a, -um</span>), the PAP has just <em>one</em> nominative singular for all genders &mdash; <span class="lat">am&#257;ns</span>, not three versions of it.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> form the PAP (nom. and gen. singular) for verbs of all four conjugations.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> decline a PAP through the 3rd declension &mdash; nominative, accusative, genitive, ablative, singular and plural.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize the 3rd conjugation's linking <span class="lat">-&#275;-</span> before <span class="lat">-ns / -ntis</span>.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday's idea</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: is the PAP active or passive, and does it describe an action that is finished or one that is happening now?</div>
+            <div class="widget-options">
+                <button data-response="Yes — active and happening now. Today you learn to build that meaning: present stem + -ns (nom.) / -ntis (gen.).">Active, happening now</button>
+                <button data-response="Careful — that describes the PPP. The PAP is active and simultaneous ('wandering,' not 'having been wandered over'). Let's build it from the present stem.">Passive, already finished</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; FORMATION ACROSS THE CONJUGATIONS <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Present stem + <span class="lat">-ns / -ntis</span></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The PAP is built on the <strong>present stem</strong>. The nominative singular ends in <span class="lat"><span class="ending">-ns</span></span>; the genitive singular ends in <span class="lat"><span class="ending">-ntis</span></span>. The ending interacts slightly differently with each conjugation, but the signature is always the same: an <span class="lat">-ns</span> you can confirm with a genitive <span class="lat">-ntis</span>.</p>
+        <table class="gtable">
+            <thead><tr><th>Conjugation</th><th>Example verb</th><th>PAP nom. sg.</th><th>PAP gen. sg.</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>1st</td><td><span class="lat">am&#333;, am&#257;re</span></td><td><span class="lat">am&#257;<span class="ending">ns</span></span></td><td><span class="lat">ama<span class="ending">ntis</span></span></td><td>loving</td></tr>
+                <tr><td>2nd</td><td><span class="lat">mone&#333;, mon&#275;re</span></td><td><span class="lat">mon&#275;<span class="ending">ns</span></span></td><td><span class="lat">mone<span class="ending">ntis</span></span></td><td>warning</td></tr>
+                <tr><td>3rd</td><td><span class="lat">mitt&#333;, mittere</span></td><td><span class="lat">mitt&#275;<span class="ending">ns</span></span></td><td><span class="lat">mitte<span class="ending">ntis</span></span></td><td>sending</td></tr>
+                <tr><td>3rd <span class="lat">-i&#333;</span></td><td><span class="lat">capi&#333;, capere</span></td><td><span class="lat">capi&#275;<span class="ending">ns</span></span></td><td><span class="lat">capie<span class="ending">ntis</span></span></td><td>taking</td></tr>
+                <tr><td>4th</td><td><span class="lat">audi&#333;, aud&#299;re</span></td><td><span class="lat">audi&#275;<span class="ending">ns</span></span></td><td><span class="lat">audie<span class="ending">ntis</span></span></td><td>hearing</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE 3RD CONJUGATION QUIRK</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">3rd conjugation verbs slip an <span class="lat"><span class="ending">-&#275;-</span></span> in before <span class="lat">-ns / -ntis</span>: <span class="lat">mitt-</span> &rarr; <span class="lat">mitt<span class="ending">&#275;</span>ns, mittentis</span>. Compare <span class="lat">trem&#333;</span> &rarr; <span class="lat">trem<span class="ending">&#275;</span>ns, trementis</span> (&ldquo;trembling&rdquo;) and <span class="lat">curr&#333;</span> &rarr; <span class="lat">curr<span class="ending">&#275;</span>ns, currentis</span> (&ldquo;running&rdquo;). The 3rd <span class="lat">-i&#333;</span> and 4th conjugations both use <span class="lat">-i&#275;ns, -ientis</span>.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; DECLINING THE PAP <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">It declines like a 3rd declension adjective</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Here is <span class="lat">am&#257;ns, amantis</span> partly declined. All genders share the same forms; only the noun it modifies tells you the gender. The accusative singular <span class="lat">amantem</span> is the key form for spotting a PAP used as a direct object or object complement.</p>
+        <table class="gtable">
+            <thead><tr><th>Case</th><th>Singular (all genders)</th><th>Plural (all genders)</th></tr></thead>
+            <tbody>
+                <tr><td>Nom.</td><td><span class="lat">am&#257;<span class="ending">ns</span></span></td><td><span class="lat">ama<span class="ending">nt&#275;s</span></span></td></tr>
+                <tr><td>Acc.</td><td><span class="lat">ama<span class="ending">ntem</span></span></td><td><span class="lat">ama<span class="ending">nt&#275;s</span></span></td></tr>
+                <tr><td>Gen.</td><td><span class="lat">ama<span class="ending">ntis</span></span></td><td><span class="lat">ama<span class="ending">ntium</span></span></td></tr>
+                <tr><td>Abl.</td><td><span class="lat">ama<span class="ending">nte</span></span> (or <span class="lat"><span class="ending">-nt&#299;</span></span>)</td><td><span class="lat">ama<span class="ending">ntibus</span></span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; BUILD THE FORM <span class="pill-time">16 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Six reps &mdash; forming PAPs and reading their endings both directions. Keep the tables above in view; the goal is to make the pattern automatic. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; form the PAP</div>
+            <div class="widget-question">What is the PAP (nom. sg.) of <span class="lat">am&#333;, am&#257;re</span> (1st conj.)?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">am&#257;tus</span></button>
+                <button data-correct="true"><span class="lat">am&#257;ns</span></button>
+                <button data-correct="false"><span class="lat">amantem</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the genitive tells you the family</div>
+            <div class="widget-question">Which is the correct genitive singular of the PAP <span class="lat">mon&#275;ns</span> (from <span class="lat">mone&#333;</span>, 2nd conj.)?</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">monentis</span></button>
+                <button data-correct="false"><span class="lat">mon&#275;tus</span></button>
+                <button data-correct="false"><span class="lat">mon&#275;re</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the 3rd conj. -&#275;-</div>
+            <div class="widget-question">What is the PAP (nom. sg.) of <span class="lat">trem&#333;, tremere</span> (3rd conj., &ldquo;to tremble&rdquo;)?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">tremntis</span></button>
+                <button data-correct="false"><span class="lat">trem&#257;ns</span></button>
+                <button data-correct="true"><span class="lat">trem&#275;ns</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; 4th conjugation</div>
+            <div class="widget-question">The PAP of <span class="lat">audi&#333;, aud&#299;re</span> (4th conj.) is:</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">audi&#275;ns, audientis</span></button>
+                <button data-correct="false"><span class="lat">aud&#299;tus, -a, -um</span></button>
+                <button data-correct="false"><span class="lat">aud&#257;ns, audantis</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; read the case</div>
+            <div class="widget-question">In <span class="lat">Dianam videntem</span>, what case is the PAP <span class="lat">videntem</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">nominative singular</button>
+                <button data-correct="true">accusative singular</button>
+                <button data-correct="false">genitive plural</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; how many nom. sg. forms?</div>
+            <div class="widget-question">How many different nominative <em>singular</em> forms does a PAP have across the genders?</div>
+            <div class="widget-options">
+                <button data-correct="false">three (one per gender)</button>
+                <button data-correct="true">one (shared by all genders)</button>
+                <button data-correct="false">two (one for m./f., one for n.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Your turn, out loud: the verb <span class="lat">curr&#333;, currere</span> (3rd conj.) means &ldquo;to run.&rdquo; Give its PAP in the nominative <em>and</em> genitive singular, and explain the vowel you hear. Then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><span class="lat">curr<span class="ending">&#275;</span>ns, currentis</span> &mdash; &ldquo;running.&rdquo; Because <span class="lat">curr&#333;</span> is 3rd conjugation, a linking <span class="lat"><span class="ending">-&#275;-</span></span> appears before <span class="lat">-ns</span>. The genitive <span class="lat">-ntis</span> confirms it is a 3rd declension adjective &mdash; a PAP, not a noun.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 11.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the module's eight new words and learn the rules for <em>using</em> the PAP in a sentence &mdash; how it agrees with its noun and how to translate it, plus the crucial PAP-vs-PPP contrast.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite, out loud, the PAP (nom. and gen. sg.) of one verb from each conjugation: <span class="lat">am&#257;ns/amantis, mon&#275;ns/monentis, mitt&#275;ns/mittentis, audi&#275;ns/audientis</span>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FORM IS BUILT</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">One stem, one ending, one nominative for all genders &mdash; you can now build a PAP from any verb. Tomorrow you learn to put it to work. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 11.02 &middot; Building the PAP</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — present stem plus -ns / -ntis, right across the board.'
+        : 'Not quite — check the formation table (mind the 3rd conjugation -ē-) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

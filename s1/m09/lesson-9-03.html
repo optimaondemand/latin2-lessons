@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 9.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 09</div>
+        <div style="font-size: 12px; color: #666;">Perfect &amp; Pluperfect Passive</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 9.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Words &amp; telling them apart</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">M&#299;das &amp; the Golden Touch</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 9.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Words, Meanings &amp; the Perfect / Pluperfect Split</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 38 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">You can build the forms. Today you learn the words that fill them &mdash; and how to read the two tenses apart.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">First, the ten new words &mdash; every one of them appears in tomorrow's Midas passage. Then two reading skills: the perfect passive has <strong>two</strong> valid English translations, and the perfect and pluperfect are told apart by one small signal &mdash; <span class="lat">est/sunt</span> vs. <span class="lat">erat/erant</span>. This is the day the grammar becomes readable.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize and use the ten Module 09 vocabulary words.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> translate a perfect passive as both &ldquo;was [verb]ed&rdquo; and &ldquo;has been [verb]ed.&rdquo;</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> tell a perfect passive from a pluperfect passive in a Latin sentence.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; VOCABULARY <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Ten new words</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">All ten appear in tomorrow's Latin passage. Study them now; the Vocabulary Check tests six of these ten plus four drawn from the cumulative M01&ndash;M08 bank.</p>
+        <table class="gtable">
+            <thead><tr><th>Latin</th><th>English</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">d&#333;num, -&#299;</span></td><td>n. &mdash; gift</td></tr>
+                <tr><td><span class="lat">opt&#333;, -&#257;re, -&#257;v&#299;</span></td><td>to wish for, desire, choose</td></tr>
+                <tr><td><span class="lat">tang&#333;, tangere, teting&#299;</span></td><td>to touch</td></tr>
+                <tr><td><span class="lat">cibus, -&#299;</span></td><td>m. &mdash; food</td></tr>
+                <tr><td><span class="lat">fam&#275;s, famis</span></td><td>f. &mdash; hunger</td></tr>
+                <tr><td><span class="lat">manus, -&#363;s</span></td><td>f. &mdash; hand</td></tr>
+                <tr><td><span class="lat">m&#299;r&#257;bilis, -e</span></td><td>wonderful, astonishing</td></tr>
+                <tr><td><span class="lat">preti&#333;sus, -a, -um</span></td><td>precious, costly</td></tr>
+                <tr><td><span class="lat">fluvius, -&#299;</span></td><td>m. &mdash; river, stream</td></tr>
+                <tr><td><span class="lat">stultus, -a, -um</span></td><td>foolish, stupid</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THREE WORDS TO WATCH</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">tang&#333;</span> has an irregular perfect stem (<span class="lat">teting&#299;</span>) and a PPP <span class="lat">tactus, -a, -um</span> &mdash; the stem shifts. <span class="lat">manus, -&#363;s</span> is 4th declension <em>feminine</em> (like <span class="lat">fr&#363;ctus</span> but feminine); remember that for PPP agreement. <span class="lat">fam&#275;s, famis</span> is 3rd declension &mdash; nominative and accusative are regular.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; TWO READING SKILLS <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Skill 1: the perfect passive has two translations</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;"><span class="lat">Tactus est</span> can be &ldquo;<strong>was touched</strong>&rdquo; (simple past) or &ldquo;<strong>has been touched</strong>&rdquo; (present perfect). Both are correct &mdash; context decides which reads better. Latin does not distinguish these two English tenses.</p>
+        <div class="sentence"><span class="s-lat">Cibus &#257; M&#299;d&#257; tactus est.</span><p class="parse">The food was touched by Midas. <em>or</em> The food has been touched by Midas. &mdash; <span class="lat">tactus</span> agrees with <span class="lat">cibus</span> (m. sg.).</p></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 16px 0 8px 0;">Skill 2: one small word tells the two tenses apart</h3>
+        <div class="contrast">
+            <div class="col a">
+                <h4>Perfect passive</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">PPP + <span class="lat">est / sunt</span><br><br><span class="lat">cibus tactus est</span><br><span style="color:#6b7a99;font-size:14px;">the food was touched</span></div>
+            </div>
+            <div class="col b">
+                <h4>Pluperfect passive</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">PPP + <span class="lat">erat / erant</span><br><br><span class="lat">cibus tactus erat</span><br><span style="color:#6b7a99;font-size:14px;">the food had been touched</span></div>
+            </div>
+        </div>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 6px 0 0;">The pluperfect describes an action completed <em>before another past action</em>: <span class="lat">omnia &#257; r&#275;ge opt&#257;ta erant</span> &mdash; &ldquo;everything had been wished for by the king&rdquo; (before he realized his error). Same participle rule; just imperfect <span class="lat">esse</span>.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; PERFECT OR PLUPERFECT? <span class="pill-time">15 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some ask perfect vs. pluperfect, one asks about agreement. Read the bold verb, find the <span class="lat">esse</span> form, and decide. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which tense?</div>
+            <div class="widget-question"><span class="lat">M&#299;d&#257;s &#257; Bacch&#333; <strong>laud&#257;tus est</strong>.</span> The bold form is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">perfect passive</button>
+                <button data-correct="false">pluperfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which tense?</div>
+            <div class="widget-question"><span class="lat">Cibus aur&#333; <strong>m&#363;t&#257;tus erat</strong> antequam r&#275;x &#275;dit.</span> The bold form is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">perfect passive</button>
+                <button data-correct="true">pluperfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which tense?</div>
+            <div class="widget-question"><span class="lat">Omnia d&#333;na &#257; r&#275;ge <strong>opt&#257;ta sunt</strong>.</span> The bold form is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">perfect passive</button>
+                <button data-correct="false">pluperfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which tense?</div>
+            <div class="widget-question"><span class="lat">Fluvius &#257; M&#299;d&#257; <strong>tactus erat</strong>.</span> The bold form is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">perfect passive</button>
+                <button data-correct="true">pluperfect passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agreement</div>
+            <div class="widget-question">Fill the blank: &ldquo;the hand was touched&rdquo; &mdash; <span class="lat">Manus &#257; r&#275;ge ___ est</span> (<span class="lat">manus</span> is f. sg.).</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">tactus</span></button>
+                <button data-correct="false"><span class="lat">tactum</span></button>
+                <button data-correct="true"><span class="lat">tacta</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which of the two tenses feels trickier to you so far?</div>
+            <div class="widget-options">
+                <button data-response="Good to name it. For the pluperfect, anchor on erat/erant = 'had been.' It always points to something finished BEFORE another past moment — exactly the beat before Midas realizes his mistake.">The pluperfect &mdash; the &ldquo;had been&rdquo; timing</button>
+                <button data-response="Fair. For the perfect, remember it does double duty in English ('was touched' AND 'has been touched'). Pick whichever reads more naturally in the sentence; both are right.">The perfect &mdash; its two English versions</button>
+                <button data-response="Nice — then keep your eye sharp on the agreement rule (the participle follows the subject) while you read tomorrow's passage. That's where most slips happen.">Neither &mdash; it's the agreement I watch</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Give both English translations of <span class="lat">d&#333;num datum est</span>, then say what the PPP <span class="lat">datum</span> agrees with. Think it through, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;The gift <strong>was given</strong>&rdquo; <em>or</em> &ldquo;the gift <strong>has been given</strong>&rdquo; &mdash; both correct. <span class="lat">datum</span> is neuter singular nominative, agreeing with <span class="lat">d&#333;num</span> (n. sg.); <span class="lat">est</span> is the 3rd sg. present of <span class="lat">esse</span>, marking the perfect passive.</div>
+        </div>
+    </div>
+
+    <div class="culture-box">
+        <div class="lbl">&#127963;&#65039; STORY CONNECTION &middot; THE GRAMMAR OF TRANSFORMATION</div>
+        <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">Everything Midas touches is transformed (<span class="lat">m&#363;t&#257;tur</span>). But once the golden touch has happened, the result is described with the perfect passive: <span class="lat">cibus aur&#333; m&#363;t&#257;tus est</span> &mdash; the food was turned to gold. The PPP + <span class="lat">est</span> captures the completed transformation, with the golden state now visible and permanent. Midas cannot undo what <span class="lat">tactus est</span>. The perfect passive is the grammar of irreversible change.</p>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 9.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read the whole Midas story in Latin &mdash; <span class="lat">Aureus M&#299;das</span>, adapted from Ovid &mdash; hunting every perfect and pluperfect passive as it goes by.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then quiz yourself on the ten words &mdash; cover the English column and say each meaning aloud, paying attention to <span class="lat">tang&#333;</span>, <span class="lat">manus</span>, and <span class="lat">fam&#275;s</span>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; READY TO READ</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Ten words, two translations, one small signal (<span class="lat">est</span> vs. <span class="lat">erat</span>) &mdash; and you can now read the compound passive. Tomorrow you put it to work on real Latin.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 9.03 &middot; Words &amp; telling them apart</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you read the signal. est/sunt = perfect, erat/erant = pluperfect, and the participle always follows the subject.'
+        : 'Not quite — look at the form of esse (est/sunt vs. erat/erant), or check that the participle matches the subject, then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

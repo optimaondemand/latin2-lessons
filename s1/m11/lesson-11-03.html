@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 11.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 11</div>
+        <div style="font-size: 12px; color: #666;">Present Active Participle</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 11.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Using the PAP &middot; new words</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Actaeon &amp; Diana</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 11.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Putting the PAP to Work &mdash; and Eight New Words</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">You can build a PAP. Today you learn to <em>use</em> it &mdash; and to keep it clearly apart from the PPP.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Three rules govern how a PAP behaves in a sentence: it is <strong>active and simultaneous</strong>, it <strong>agrees with its noun</strong> like any adjective, and it <strong>translates as &ldquo;&hellip;-ing&rdquo; or &ldquo;while / because / when &hellip;&rdquo;</strong>. You'll also learn the module's eight new words, which set up tomorrow's reading of Actaeon in the grove.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> make a PAP agree with its noun and translate a PAP phrase as an English participial phrase or a relative clause.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> tell a PAP (active, simultaneous) apart from a PPP (passive, completed) in a sentence.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize and use the eight new words of Module 11.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; NEW VOCABULARY <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Eight words for the forest</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">These words carry the story of Actaeon. Several return in Module 12 as the tale continues. Study them before tomorrow's reading.</p>
+        <table class="gtable">
+            <thead><tr><th>Latin</th><th>English</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">v&#275;n&#257;tor, v&#275;n&#257;t&#333;ris</span></td><td>m. &mdash; hunter</td></tr>
+                <tr><td><span class="lat">cervus, -&#299;</span></td><td>m. &mdash; stag, male deer</td></tr>
+                <tr><td><span class="lat">corn&#363;, -&#363;s</span></td><td>n. &mdash; horn, antler</td></tr>
+                <tr><td><span class="lat">lacus, -&#363;s</span></td><td>m. &mdash; lake, pool</td></tr>
+                <tr><td><span class="lat">timor, tim&#333;ris</span></td><td>m. &mdash; fear, dread</td></tr>
+                <tr><td><span class="lat">unda, -ae</span></td><td>f. &mdash; wave, water</td></tr>
+                <tr><td><span class="lat">trem&#333;, tremere</span></td><td>to tremble, shake</td></tr>
+                <tr><td><span class="lat">conspici&#333;, conspicere, conspex&#299;</span></td><td>to catch sight of, see suddenly</td></tr>
+            </tbody>
+        </table>
+        <div class="etym-box">
+            <div class="lbl">&#128221; NOTES ON THESE WORDS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Corn&#363;</span> is a 4th declension neuter noun &mdash; its nominative and accusative singular are both <span class="lat">corn&#363;</span>. <span class="lat">Lacus</span> is also 4th declension (like <span class="lat">arcus</span> from M01). <span class="lat">Trem&#333;</span> is 3rd conjugation, so its PAP is <span class="lat">trem&#275;ns, trementis</span>. <span class="lat">Conspici&#333;</span> is 3rd <span class="lat">-i&#333;</span>; you will meet its PAP in M12.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THREE RULES FOR USING A PAP <span class="pill-time">12 min</span></div>
+        <div class="sentence"><span class="s-lat">Rule 1 &mdash; Active and simultaneous.</span><p class="parse">Unlike the PPP (passive, completed), the PAP describes what a noun <em>is doing</em> at the same moment the main verb happens. <span class="lat">Acta&#275;&#333;n, in silv&#257; err&#257;ns, fontem inv&#275;nit</span> &mdash; &ldquo;Actaeon, wandering in the forest, found the spring.&rdquo; The wandering and the finding overlap in time.</p></div>
+        <div class="sentence"><span class="s-lat">Rule 2 &mdash; Agrees with its noun.</span><p class="parse">Like all adjectives, the PAP agrees in gender, number, and case. Since every nom. sg. is <span class="lat">-ns</span> regardless of gender, the noun tells you the gender. <span class="lat">v&#275;n&#257;tor err&#257;ns</span> (nom. sg. m.) &middot; <span class="lat">nymphae trementes</span> (nom. pl. f.) &middot; <span class="lat">Dianam videntem</span> (acc. sg.).</p></div>
+        <div class="sentence"><span class="s-lat">Rule 3 &mdash; Translate as &ldquo;&hellip;-ing&rdquo; or &ldquo;while / because / when&hellip;&rdquo;</span><p class="parse">A PAP on the subject usually becomes an English participial phrase, but it can carry a temporal (while&hellip;), causal (because&hellip;), or plain descriptive sense. <span class="lat">Diana, Acta&#275;&#333;nem conspiciens, &#299;r&#257;ta erat</span> &mdash; &ldquo;Diana, catching sight of Actaeon, was angry,&rdquo; or &ldquo;When Diana caught sight of Actaeon, she was angry.&rdquo;</p></div>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; STORY CONNECTION</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Actaeon's fate is sealed in a single participial phrase. He is not searching for Diana; he is just a hunter wandering away from his companions &mdash; the <span class="lat">v&#275;n&#257;tor err&#257;ns</span> &mdash; who comes upon her sacred grove with no intent at all. The PAP captures this exactly: an action happening at the very moment everything changes. There is no agency in <span class="lat">err&#257;ns</span>; there is only motion, and misfortune.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE TWO PARTICIPIAL TRAPS <span class="pill-time">5 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">PAP vs. PPP</h3>
+        <div class="contrast">
+            <div class="col a">
+                <h4>PAP &mdash; always active</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;"><span class="lat">videns Dianam</span><br><span style="color:#6b7a99;font-size:14px;">[he,] seeing Diana</span><br><br>He does the seeing; the action happens now, alongside the main verb. Signature: <span class="lat">-ns</span> with genitive <span class="lat">-ntis</span>.</div>
+            </div>
+            <div class="col b">
+                <h4>PPP &mdash; always passive</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;"><span class="lat">Diana v&#299;sa</span><br><span style="color:#6b7a99;font-size:14px;">Diana having been seen</span><br><br>Diana is the one seen; the action is completed. Signature: a 2-1-2 form, often <span class="lat">-tus/-ta/-tum</span> or <span class="lat">-sus/-sa/-sum</span>.</div>
+            </div>
+        </div>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 6px 0 0;">A PAP is <strong>always active</strong>. A PPP is <strong>always passive</strong>. Never confuse them: <span class="lat">-ns / -ntis</span> means PAP; a 2-1-2 adjective form means PPP.</p>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; PAP OR PPP? <span class="pill-time">10 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps. For each, decide whether the highlighted participle is a PAP (active, simultaneous) or a PPP (passive, completed). Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question"><span class="lat">Acta&#275;&#333;n, <strong>err&#257;ns</strong> per silvam, d&#275; per&#299;cul&#333; n&#333;n c&#333;git&#257;bat.</span> The highlighted participle is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">PAP (active)</button>
+                <button data-correct="false">PPP (passive)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question"><span class="lat">Diana <strong>v&#299;sa</strong> &#257; v&#275;n&#257;t&#333;re, &#299;r&#257;ta erat.</span> The highlighted participle is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">PAP (active)</button>
+                <button data-correct="true">PPP (passive)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question"><span class="lat">Nymphae, <strong>tim&#275;nt&#275;s</strong> Dianam, tac&#275;bant.</span> The highlighted participle is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">PAP (active)</button>
+                <button data-correct="false">PPP (passive)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question"><span class="lat">Acta&#275;&#333;n in cervum <strong>m&#363;t&#257;tus</strong> erat.</span> The highlighted participle is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">PAP (active)</button>
+                <button data-correct="true">PPP (passive)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; best translation</div>
+            <div class="widget-question">Best translation of <span class="lat">v&#275;n&#257;tor trem&#275;ns</span>:</div>
+            <div class="widget-options">
+                <button data-correct="false">the hunter having been shaken</button>
+                <button data-correct="true">the trembling hunter</button>
+                <button data-correct="false">the hunter about to tremble</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128173; PART 5 &middot; ANALYZE, THEN CHECK <span class="pill-time">3 min</span></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which of the three rules do you find hardest to apply right now?</div>
+            <div class="widget-options">
+                <button data-response="Good to name it. Rule 1 is about time: the PAP action runs alongside the main verb, never before it. Watch for that in tomorrow's reading.">Rule 1 &mdash; the &ldquo;simultaneous&rdquo; idea</button>
+                <button data-response="Fair. Rule 2 is just adjective agreement: match the PAP's case, number, and gender to its noun — the same skill you already use for any adjective.">Rule 2 &mdash; agreement</button>
+                <button data-response="Understandable. Rule 3 gives you options: '-ing,' or 'while / because / when.' Read the whole sentence, then pick the sense that fits.">Rule 3 &mdash; choosing the English</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Analyze all three before you look. For each highlighted PAP name (a) its verb, (b) the noun it modifies, and (c) what it tells us is happening at the same time as the main verb:</p>
+            <div class="sentence"><span class="s-lat">1. Acta&#275;&#333;n, <u>err&#257;ns</u> in silv&#257;, fontem sacrum inv&#275;nit.</span></div>
+            <div class="sentence"><span class="s-lat">2. Diana, Acta&#275;&#333;nem <u>videns</u>, &#299;r&#257;ta erat.</span></div>
+            <div class="sentence"><span class="s-lat">3. V&#275;n&#257;tor <u>trem&#275;ns</u> in aquam cecidit.</span></div>
+            <button class="reveal-btn">Reveal answers</button>
+            <div class="reveal-body">
+                <strong>1.</strong> &ldquo;Actaeon, wandering in the forest, found the sacred spring.&rdquo; <span class="lat">err&#257;ns</span> &mdash; PAP of <span class="lat">err&#333;</span> (1st conj.), nom. sg., modifying <span class="lat">Acta&#275;&#333;n</span> (m.); the wandering is simultaneous with the finding. <span class="lat">err&#257;ns, errantis</span>.<br><br>
+                <strong>2.</strong> &ldquo;Diana, seeing Actaeon, was angry.&rdquo; <span class="lat">videns</span> &mdash; PAP of <span class="lat">vide&#333;</span> (2nd conj.), nom. sg., modifying <span class="lat">Diana</span> (f.); the seeing is simultaneous with her anger. <span class="lat">vid&#275;ns, videntis</span>.<br><br>
+                <strong>3.</strong> &ldquo;The trembling hunter fell into the water.&rdquo; <span class="lat">trem&#275;ns</span> &mdash; PAP of <span class="lat">trem&#333;</span> (3rd conj.), nom. sg., modifying <span class="lat">v&#275;n&#257;tor</span> (m.); the trembling is simultaneous with the falling. <span class="lat">trem&#275;ns, trementis</span> &mdash; note the 3rd conj. <span class="lat">-&#275;-</span>.
+            </div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 11.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read the story itself &mdash; Ovid's Actaeon in Diana's sacred grove &mdash; hunting down every PAP as it appears in real Latin narrative.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then say the eight new words aloud with their meanings, and give one sentence explaining how you tell a PAP from a PPP.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; READY TO READ</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Three rules, eight words, and a clean line between PAP and PPP &mdash; everything you need to read Ovid tomorrow. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 11.03 &middot; Using the PAP &middot; new words</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you read the signature right: active/-ns for PAP, a 2-1-2 passive form for PPP.'
+        : 'Not quite — check the ending and the voice: -ns / -ntis is an active PAP; a -tus/-sa form is a passive PPP. Try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

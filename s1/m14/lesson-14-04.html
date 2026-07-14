@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 14.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FFFFFF; border:1px solid #D0D9E8; border-top:3px solid #C7922C; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .passage .ln { color:#9aa7bd; font-size:13px; margin-right:8px; }
+    .passage .line { font-style:italic; color:#0E1C42; font-size:17px; line-height:1.95; }
+    .passage b { color:#5A2A82; font-style:italic; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 14</div>
+        <div style="font-size: 12px; color: #666;">Future Active Participle</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 14.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; <em>Phaethōn Cadit</em></div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">The Fall of Phaethon</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 14.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Ovid &mdash; The Burning Fall</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus story equals reading. Today the pieces click together &mdash; and the sky catches fire.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">No new grammar today: you <em>use</em> what you built. You read a connected passage adapted from Book II of Ovid&rsquo;s <em>Metamorphōsēs</em>, hunting every participle and naming it PPP, PAP, or FAP. Then you meet the myth&rsquo;s tender close &mdash; Phaethon&rsquo;s sisters, weeping until they become poplar trees, their tears hardening into amber.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read a connected Latin passage and identify PPP, PAP, and FAP forms within it.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> retell the fall of Phaethon and the aetiological myth of amber.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THE PASSAGE <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><em>Phaethōn Cadit</em></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Phaethon has taken the reins of the sun&rsquo;s chariot; the horses immediately know they carry a weaker hand. Read aloud. Find every <b>participle</b> (bolded) and decide whether it is PPP, PAP, or FAP. Note especially how the FAP charges the narrative with impending catastrophe. The glossary follows.</p>
+        <div class="passage">
+            <div style="font-size:11px;color:#9a7b1e;letter-spacing:.4px;margin-bottom:10px;">AFTER OVID, <em>METAMORPHŌSĒS</em> II &middot; ADAPTED FOR LATIN 2</div>
+            <div class="line"><span class="ln">1</span>Phaethōn, frēna <b>accepta</b>, equōs ad caelum altum agere temptāvit; sed equī, <b>sentiēntēs</b> manum levem, statim ex viā sōlis cucurrērunt.</div>
+            <div class="line"><span class="ln">2</span>Phaethōn, <b>terram videns</b> longē sub pedibus, timuit; frēna <b>nōn retenta</b>, equī furōre magnō in terrās descendēbant.</div>
+            <div class="line"><span class="ln">3</span>Flammae ex currū <b>cadentēs</b> terram incendēbant; silvae ardēbant, flūmina siccābantur, terrae ipsae <b>ūstae</b> erant.</div>
+            <div class="line"><span class="ln">4</span>Iuppiter, <b>terrās spectāns</b>, dolōre et īrā commōtus est; iam fulmen, <b>iactūrus</b>, in manū tenēbat.</div>
+            <div class="line"><span class="ln">5</span>Phaethōn, <b>casūrus</b>, nōmina deōrum frustrā clāmāvit; Iuppiter fulmen magnum ad eum iēcit.</div>
+            <div class="line"><span class="ln">6</span>Phaethōn, <b>fulmine percussus</b>, ē currū cecidit; per caelum longum velut stella <b>cadēns</b> in flūmen Ēridanum lāpsus est.</div>
+            <div class="line"><span class="ln">7</span>Sorōrēs Phaethontis, <b>frātrem quaerēntēs</b>, ad rīpam Ēridanī vēnērunt et ibi diū lacrimābant.</div>
+            <div class="line"><span class="ln">8</span>Sorōrēs, in pīnōs <b>mūtātūrae</b>, ad flūmen stābant; paulātim cortex circum corpora eārum crēscēbat, et in arborēs conversae sunt.</div>
+        </div>
+        <div class="etym-box">
+            <div class="lbl">&#128220; GLOSSARY</div>
+            <p style="font-size:15px;color:#1a2340;line-height:1.7;margin:0;">
+            <span class="lat">frēna accepta</span> &mdash; PPP of <span class="lat">accipiō</span>, the reins having been received &middot;
+            <span class="lat">sentiēntēs</span> &mdash; PAP of <span class="lat">sentiō</span>, sensing, feeling &middot;
+            <span class="lat">manum levem</span> &mdash; a light hand (acc. sg.) &middot;
+            <span class="lat">nōn retenta</span> &mdash; PPP of <span class="lat">retineō</span>, not held back, not restrained &middot;
+            <span class="lat">cadentēs</span> &mdash; PAP of <span class="lat">cadō</span>, falling &middot;
+            <span class="lat">ūstae</span> &mdash; PPP of <span class="lat">ūrō</span>, burned, scorched &middot;
+            <span class="lat">iactūrus</span> &mdash; FAP of <span class="lat">iaciō</span>, about to hurl &middot;
+            <span class="lat">casūrus</span> &mdash; FAP of <span class="lat">cadō</span>, about to fall &middot;
+            <span class="lat">fulmine percussus</span> &mdash; PPP of <span class="lat">percutiō</span>, struck by the thunderbolt &middot;
+            <span class="lat">cadēns</span> &mdash; PAP of <span class="lat">cadō</span>, falling (like a falling star) &middot;
+            <span class="lat">Ēridanum</span> &mdash; the Eridanus river (acc. sg.) &middot;
+            <span class="lat">lāpsus est</span> &mdash; glided, fell (perfect of <span class="lat">lābor</span>, deponent) &middot;
+            <span class="lat">quaerēntēs</span> &mdash; PAP of <span class="lat">quaerō</span>, seeking, looking for &middot;
+            <span class="lat">mūtātūrae</span> &mdash; FAP nom. pl. f. of <span class="lat">mūtō</span>, about to be changed &middot;
+            <span class="lat">cortex</span> &mdash; bark (of a tree) &middot;
+            <span class="lat">crēscēbat</span> &mdash; was growing (imperfect of <span class="lat">crēscō</span>) &middot;
+            <span class="lat">conversae sunt</span> &mdash; were transformed (perfect passive of <span class="lat">convertō</span>)</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; CULTURAL READING <span class="pill-time">9 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; THE SISTERS BECOME POPLARS</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">Ovid tells us that Phaethon&rsquo;s sisters (the Heliades, daughters of Helios) wept so long and so bitterly on the bank of the Eridanus river that the gods transformed them into poplar trees &mdash; and their tears hardened into amber. This is one of Ovid&rsquo;s many <em>aetiological</em> myths (myths that explain the origin of something in the natural world). Amber was a precious commodity in the ancient world, traded up through central Europe from the Baltic coast; the Romans treasured it. Ovid&rsquo;s myth gives it a heartbreaking origin: the fossilized tears of grieving sisters.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; WHY THE FAP FITS THIS STORY</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The FAP is Ovid&rsquo;s favorite way to express fate. As the horses bolt and the chariot plunges, Phaethon is <span class="lat">casūrus</span> &mdash; about to fall. The single word carries the weight of his entire doom. The FAP does not just describe a future action; it charges the moment with dramatic inevitability. This is why Latin participles are so powerful: they compress a whole tragic destiny into one adjective.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">15 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the story, some on the Latin. Take them slowly; the point is to prove you can both read the passage and follow the tale.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">Why do the horses bolt from the sun&rsquo;s path?</div>
+            <div class="widget-options">
+                <button data-correct="false">Jupiter&rsquo;s thunderbolt frightens them</button>
+                <button data-correct="true">They sense Phaethon&rsquo;s hand is too light (<span class="lat">manum levem</span>)</button>
+                <button data-correct="false">The sisters call them to the river</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Translate: <span class="lat">Phaethōn, casūrus, nōmina deōrum clāmāvit.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Phaethon, having fallen, called the names of the gods</button>
+                <button data-correct="true">Phaethon, about to fall, called the names of the gods</button>
+                <button data-correct="false">Phaethon, falling, called the names of the gods</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; find the FAP</div>
+            <div class="widget-question">Which bolded word in the passage is a Future Active Participle?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">cadentēs</span></button>
+                <button data-correct="false"><span class="lat">ūstae</span></button>
+                <button data-correct="true"><span class="lat">iactūrus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">What finally happens to Phaethon&rsquo;s sisters?</div>
+            <div class="widget-options">
+                <button data-correct="true">They are transformed into poplar trees</button>
+                <button data-correct="false">They are struck by lightning too</button>
+                <button data-correct="false">They sail away on the Eridanus</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the big idea</div>
+            <div class="widget-question">An <em>aetiological</em> myth is one that&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">warns against pride and disobedience</button>
+                <button data-correct="false">describes a battle between gods and mortals</button>
+                <button data-correct="true">explains the origin of something in the natural world</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">How did the reading feel &mdash; could you track the participles as you went?</div>
+            <div class="widget-options">
+                <button data-response="Great — that fluency is exactly the goal. Reread it once more aloud so the participles feel natural, then you&rsquo;re set for tomorrow&rsquo;s review.">I followed most of them</button>
+                <button data-response="Totally normal for a first pass. Reread with the glossary open and pause at each bolded word to name its type — the density is high on purpose.">The participles piled up fast</button>
+                <button data-response="Smart to name it. Revisit Lesson 14.03&rsquo;s three-participle table, then reread line by line. The endings are your signposts.">I lost the thread partway</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first, then check: in your notes, translate line 4 &mdash; <span class="lat">Iuppiter, terrās spectāns, dolōre et īrā commōtus est; iam fulmen, iactūrus, in manū tenēbat.</span> Identify both participles by type. Then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><em>&ldquo;Jupiter, watching the lands, was moved by grief and anger; already, about to hurl it, he held the thunderbolt in his hand.&rdquo;</em> &mdash; <span class="lat">spectāns</span> = PAP (active, simultaneous: watching); <span class="lat">iactūrus</span> = FAP (active, future: about to hurl). The two participles set the scene and load the next instant with menace.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 14.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you&rsquo;re ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the fall of Phaethon in three sentences &mdash; and use the words <span class="lat">fulmen</span>, <span class="lat">casūrus</span>, and <span class="lat">sorōrēs</span> at least once.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ OVID TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">A real passage, all three participles, and a myth that turns tears to amber. One more day and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 14.04 &middot; Reading &mdash; <em>Phaethōn Cadit</em></div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the passage (or check the word endings) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

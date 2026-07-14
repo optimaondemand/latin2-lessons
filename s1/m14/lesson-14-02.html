@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 14.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 14</div>
+        <div style="font-size: 12px; color: #666;">Future Active Participle</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 14.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Forming the FAP</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">The Fall of Phaethon</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 14.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Supine Stem plus <em>-ūrus</em></div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you learned what the FAP <em>is</em>. Today you learn to <em>build</em> one.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The rule is short: take the <strong>supine stem</strong> (the same stem you already use for the PPP) and add <span class="lat">-ūrus / -ūra / -ūrum</span>. Because that ending follows the ordinary 2nd declension adjective pattern, the FAP is far simpler to decline than the PAP &mdash; no 3rd-declension irregularity, just regular <span class="lat">-us / -a / -um</span> agreement.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> find a verb&rsquo;s supine stem and add <span class="lat">-ūrus</span> to build the FAP.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> decline the FAP as a regular 2nd declension adjective in all genders and cases.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize the key irregular FAPs, especially <span class="lat">futūrus</span> (from <span class="lat">sum</span>).</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday&rsquo;s big idea</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: the Future Active Participle expresses which voice and which time?</div>
+            <div class="widget-options">
+                <button data-response="Yes! Active voice, future time — 'about to do.' Today we build it from the supine stem plus -ūrus.">Active voice, future time</button>
+                <button data-response="Close to check — that pairing (passive, past) is the PPP. The FAP is active and future: 'about to do.' Let&rsquo;s build it.">not sure yet</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; FIND THE STEM, ADD THE ENDING <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The supine stem is the starting point</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The Future Active Participle is formed from the <strong>supine stem</strong> (also called the perfect passive participial stem, or PPP stem) plus the ending <strong><span class="lat">-ūrus / -ūra / -ūrum</span></strong>. Find the PPP, drop its <span class="lat">-us</span> to get the stem, then add <span class="lat">-ūrus</span>. Here it is across all four conjugations, plus the two irregulars worth memorizing:</p>
+        <table class="gtable">
+            <thead><tr><th>Conj.</th><th>Verb</th><th>PPP</th><th>Supine stem</th><th>FAP (m. / f. / n.)</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>1st</td><td><span class="lat">amō, amāre</span></td><td><span class="lat">amātus</span></td><td><span class="lat">amāt-</span></td><td><span class="lat">amāt<span class="ending">ūrus</span> / amāt<span class="ending">ūra</span> / amāt<span class="ending">ūrum</span></span></td><td>about to love</td></tr>
+                <tr><td>2nd</td><td><span class="lat">moneō, monēre</span></td><td><span class="lat">monitus</span></td><td><span class="lat">monit-</span></td><td><span class="lat">monit<span class="ending">ūrus</span> / monit<span class="ending">ūra</span> / monit<span class="ending">ūrum</span></span></td><td>about to warn</td></tr>
+                <tr><td>3rd</td><td><span class="lat">mittō, mittere</span></td><td><span class="lat">missus</span></td><td><span class="lat">miss-</span></td><td><span class="lat">miss<span class="ending">ūrus</span> / miss<span class="ending">ūra</span> / miss<span class="ending">ūrum</span></span></td><td>about to send</td></tr>
+                <tr><td>4th</td><td><span class="lat">audiō, audīre</span></td><td><span class="lat">audītus</span></td><td><span class="lat">audīt-</span></td><td><span class="lat">audīt<span class="ending">ūrus</span> / audīt<span class="ending">ūra</span> / audīt<span class="ending">ūrum</span></span></td><td>about to hear</td></tr>
+                <tr><td style="color:#C7922C;font-weight:700;">Irreg.</td><td><span class="lat">sum, esse</span></td><td>(no PPP)</td><td><span class="lat">fut-</span> (special)</td><td><span class="lat">fut<span class="ending">ūrus</span> / fut<span class="ending">ūra</span> / fut<span class="ending">ūrum</span></span></td><td>about to be</td></tr>
+                <tr><td style="color:#C7922C;font-weight:700;">Irreg.</td><td><span class="lat">eō, īre</span></td><td>(itum)</td><td><span class="lat">it-</span></td><td><span class="lat">it<span class="ending">ūrus</span> / it<span class="ending">ūra</span> / it<span class="ending">ūrum</span></span></td><td>about to go</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; ONE FAMOUS IRREGULAR</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The verb <span class="lat">sum</span> has no PPP, but it does have a FAP: <span class="lat">futūrus</span> &mdash; &ldquo;about to be.&rdquo; You already know its descendant: the English word <em>future</em> is literally &ldquo;the thing about to be.&rdquo;</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; DECLINING THE FAP <span class="pill-time">7 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">It agrees like <em>bonus, -a, -um</em></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Unlike the PAP (3rd declension, stem in <span class="lat">-nt-</span>), the FAP follows the familiar <strong>2nd declension</strong> adjective pattern. It agrees with the noun it modifies in gender, number, and case. Apply standard endings after the <span class="lat">-ūr-</span> base:</p>
+        <table class="gtable">
+            <thead><tr><th>Case</th><th>Masc.</th><th>Fem.</th><th>Neut.</th></tr></thead>
+            <tbody>
+                <tr><td>Nom. sg.</td><td><span class="lat">casūrus</span></td><td><span class="lat">casūra</span></td><td><span class="lat">casūrum</span></td></tr>
+                <tr><td>Gen. sg.</td><td><span class="lat">casūrī</span></td><td><span class="lat">casūrae</span></td><td><span class="lat">casūrī</span></td></tr>
+                <tr><td>Dat. sg.</td><td><span class="lat">casūrō</span></td><td><span class="lat">casūrae</span></td><td><span class="lat">casūrō</span></td></tr>
+                <tr><td>Acc. sg.</td><td><span class="lat">casūrum</span></td><td><span class="lat">casūram</span></td><td><span class="lat">casūrum</span></td></tr>
+            </tbody>
+        </table>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 10px 0 0;">The only real work is finding the supine stem in the first place. Once you have <span class="lat">-ūr-</span>, every ending is one you already know.</p>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; BUILD IT <span class="pill-time">13 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps &mdash; forming the FAP and reading its endings. Keep the tables above in view; the goal is to make <span class="lat">supine stem + -ūrus</span> automatic. Wrong answers give a hint; use Reset to try again.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; build the form</div>
+            <div class="widget-question">The verb <span class="lat">cadō</span> has supine stem <span class="lat">cās-</span>. What is its FAP (nom. sg. m.)?</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">casūrus</span></button>
+                <button data-correct="false"><span class="lat">cadēns</span></button>
+                <button data-correct="false"><span class="lat">casus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; spot the ending</div>
+            <div class="widget-question">Which ending marks a word as a Future Active Participle?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">-ns / -ntis</span></button>
+                <button data-correct="false"><span class="lat">-us / -a / -um</span> on the supine stem</button>
+                <button data-correct="true"><span class="lat">-ūrus / -ūra / -ūrum</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; build the form</div>
+            <div class="widget-question">From <span class="lat">iaciō</span> (PPP <span class="lat">iactus</span>), what is the FAP meaning &ldquo;about to hurl&rdquo; (nom. sg. m.)?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">iaciēns</span></button>
+                <button data-correct="true"><span class="lat">iactūrus</span></button>
+                <button data-correct="false"><span class="lat">iactus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the famous one</div>
+            <div class="widget-question">The verb <span class="lat">sum</span> (to be) has no PPP. What is its FAP?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">essūrus</span></button>
+                <button data-correct="false"><span class="lat">sumtūrus</span></button>
+                <button data-correct="true"><span class="lat">futūrus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; make it agree</div>
+            <div class="widget-question">To modify <span class="lat">sorōrēs</span> (nom. pl. f., &ldquo;the sisters&rdquo;), what form of the FAP of <span class="lat">mūtō</span> (&ldquo;about to be changed&rdquo;) do you need?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">mūtātūrus</span></button>
+                <button data-correct="false"><span class="lat">mūtātūrum</span></button>
+                <button data-correct="true"><span class="lat">mūtātūrae</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Say it out loud: the verb <span class="lat">videō</span> has PPP <span class="lat">vīsus</span>. Build its FAP for &ldquo;about to see&rdquo; and give its meaning. Then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><strong><span class="lat">visūrus, -a, -um</span></strong> &mdash; &ldquo;about to see / going to see.&rdquo; Supine stem <span class="lat">vīs-</span> (from PPP <span class="lat">vīsus</span>) + <span class="lat">-ūrus</span>. Active voice, future time.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 14.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you set all three participles side by side &mdash; PPP, PAP, FAP &mdash; learn to tell them apart on sight, and meet the module&rsquo;s eight new vocabulary words.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then, out loud, form the FAP of three verbs: <span class="lat">amō</span> &rarr; <span class="lat">amātūrus</span>, <span class="lat">mittō</span> &rarr; <span class="lat">missūrus</span>, <span class="lat">sum</span> &rarr; <span class="lat">futūrus</span>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FORM IS YOURS</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Supine stem plus <span class="lat">-ūrus</span>, declined like <span class="lat">bonus</span> &mdash; that is the whole FAP. Tomorrow you learn to tell it apart from its two siblings at a glance.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 14.02 &middot; Forming the FAP</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — supine stem plus -ūrus, agreeing like a 2nd declension adjective.'
+        : 'Not quite — remember the FAP is the supine stem plus -ūrus / -ūra / -ūrum. Try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

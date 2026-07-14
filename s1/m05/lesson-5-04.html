@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 5.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#fff; border:1px solid #D0D9E8; border-top:3px solid #5A2A82; border-radius:8px; padding:16px 20px; margin:14px 0; }
+    .passage .ln { color:#9aa3b5; font-size:12px; font-style:normal; margin-right:8px; }
+    .passage .line { font-style:italic; color:#0e1c42; font-size:17px; line-height:1.85; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 05</div>
+        <div style="font-size: 12px; color: #666;">The Passive System, Consolidated</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 5.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Arachn&#x113; Superba</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Ovid&rsquo;s Arachne</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 5.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Latin &mdash; The Weaver&rsquo;s Pride</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus words equals reading. Today the pieces click together &mdash; and a mortal reaches too high.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Today you read a connected Latin passage adapted from Ovid's account of <strong>Arachne</strong>, using the passive tenses you consolidated this week and the ten words from yesterday. As you read, name each passive verb's tense &mdash; and remember that <span class="lat">m&#x12B;r&#x101;tur</span> and <span class="lat">m&#x12B;r&#x101;bantur</span> are deponent, active in meaning. No new grammar today: today you <em>use</em> what you built.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read a connected Latin passage and identify each passive verb's tense.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> retell the Arachne story and explain the pride that drives it.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">15 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Arachn&#x113; Superba</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read each line aloud. Find the passive verbs and note whether each is present, imperfect, or future. Use the glossary below for the words you have not formally learned.</p>
+        <div class="passage">
+            <div style="font-size:11px;color:#9a7b1e;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;">After Ovid, <em>Metamorph&#x14D;s&#x113;s</em> VI &mdash; adapted for Latin 2</div>
+            <div class="line"><span class="ln">1</span>In parv&#x14D; oppid&#x14D; Lydiae Arachn&#x113; habit&#x101;bat. Pater eius l&#x101;nam ting&#x113;bat; f&#x12B;lia autem t&#x113;l&#x101;s m&#x12B;r&#x101;bil&#x113;s tex&#x113;bat.</div>
+            <div class="line"><span class="ln">2</span>Ars Arachn&#x113;s in t&#x14D;t&#x101; terr&#x101; laud&#x101;b&#x101;tur: t&#x113;lae eius &#x101; mult&#x12B;s spect&#x101;bantur et m&#x12B;r&#x101;bantur.</div>
+            <div class="line"><span class="ln">3</span>Virgin&#x113;s et mulier&#x113;s ex agr&#x12B;s et collibus veni&#x113;bant ut opus eius vid&#x113;rent. Digit&#x12B; Arachn&#x113;s semper mov&#x113;bantur &mdash; l&#x101;na trah&#x113;b&#x101;tur, col&#x14D;r&#x113;s &#x14D;rdin&#x101;bantur.</div>
+            <div class="line"><span class="ln">4</span>Sed Arachn&#x113; superbior fier&#x12B; coepit. &ldquo;Ars mea,&rdquo; d&#x12B;c&#x113;bat, &ldquo;cum arte Minervae compar&#x101;r&#x12B; potest.&rdquo;</div>
+            <div class="line"><span class="ln">5</span>Haec verba ab omnibus aud&#x12B;ta sunt. N&#x14D;men Arachn&#x113;s per t&#x14D;tam Graeciam fertur et laud&#x101;tur &mdash; sed dea n&#x14D;ndum audit.</div>
+            <div class="line"><span class="ln">6</span>Comit&#x113;s Arachn&#x113;n mon&#x113;bant: &ldquo;Cav&#x113;, am&#x12B;ca! Dea Minerva &#x101; gl&#x14D;ri&#x101; su&#x101; n&#x14D;n mov&#x113;bitur.&rdquo;</div>
+            <div class="line"><span class="ln">7</span>Arachn&#x113; autem n&#x14D;n mon&#x113;b&#x101;tur: gl&#x14D;ria sua cr&#x113;sc&#x113;bat, superbia cr&#x113;sc&#x113;bat.</div>
+            <div class="line"><span class="ln">8</span>Mox f&#x101;ma Arachn&#x113;s ad Olympum ferr&#x12B; d&#x12B;c&#x113;b&#x101;tur &mdash; et Minerva haec verba aud&#x12B;t&#x16B;ra erat.</div>
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; GLOSSARY</div>
+            <p style="font-size:15px;color:#1a2340;line-height:1.7;margin:0;">
+                <span class="lat">oppid&#x14D;</span> &mdash; in a small town (abl. of <span class="lat">oppidum, -&#x12B;</span>) &middot;
+                <span class="lat">Lydiae</span> &mdash; of Lydia (gen.; a region of Asia Minor) &middot;
+                <span class="lat">ting&#x113;bat</span> &mdash; used to dye (impf. active of <span class="lat">ting&#x14D;</span>) &middot;
+                <span class="lat">laud&#x101;b&#x101;tur</span> &mdash; was being praised (1st conj. impf. passive) &middot;
+                <span class="lat">m&#x12B;r&#x101;bantur</span> &mdash; marveled at (deponent, 3pl impf. &mdash; active meaning) &middot;
+                <span class="lat">&#x14D;rdin&#x101;bantur</span> &mdash; were being arranged (1st conj. impf. passive) &middot;
+                <span class="lat">compar&#x101;r&#x12B; potest</span> &mdash; can be compared (present passive infinitive + <span class="lat">potest</span>) &middot;
+                <span class="lat">fertur</span> &mdash; is carried, is reported (3rd conj. present passive of <span class="lat">fer&#x14D;</span>) &middot;
+                <span class="lat">cav&#x113;</span> &mdash; beware! (imperative of <span class="lat">cave&#x14D;</span>) &middot;
+                <span class="lat">cr&#x113;sc&#x113;bat</span> &mdash; was growing (impf. active of <span class="lat">cr&#x113;sc&#x14D;</span>) &middot;
+                <span class="lat">ferr&#x12B; d&#x12B;c&#x113;b&#x101;tur</span> &mdash; was said to be carried (passive + <span class="lat">d&#x12B;c&#x113;b&#x101;tur</span>, reported speech) &middot;
+                <span class="lat">aud&#x12B;t&#x16B;ra erat</span> &mdash; was about to hear (future active periphrastic &mdash; a preview; translate &ldquo;was about to hear&rdquo;)
+            </p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE STORY BEHIND IT <span class="pill-time">10 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; ARACHNE &middot; OVID, <em>METAMORPHOSES</em> VI</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Arachne was a mortal girl from <strong>Lydia</strong>, a region of Asia Minor. She was not born to wealth &mdash; her father dyed wool for a living &mdash; but her weaving was so fine that people came from the fields and hills just to watch her fingers move across the loom. Her <span class="lat">ars</span> (skill) earned her a reputation, her <span class="lat">f&#x101;ma</span>, across the whole land.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">But praise turned to pride. Arachne began to boast that her skill could be <em>compared</em> to that of <strong>Minerva</strong> herself &mdash; the goddess of wisdom and of weaving. Her companions warned her: <span class="lat">Cav&#x113;!</span> &mdash; beware. A goddess will not be moved by a mortal's glory. Arachne would not listen.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">The passage ends on the edge of the reckoning: the boast is repeated everywhere, carried at last all the way to Olympus &mdash; and Minerva is about to hear it. What happens next (Module 06) is the contest, and the transformation that gave the spider its ancient name.</p>
+        </div>
+    </div>
+
+    <!-- Etymology -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#129433; ETYMOLOGY <span class="pill-time">3 min</span></div>
+        <div class="etym-box">
+            <div class="lbl">&#128172; ARACHNID</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Arachne's name gave science the word <em>arachnid</em> &mdash; the class that includes spiders, scorpions, and mites. At the end of the story (Module 06), Minerva turns Arachne into a spider as punishment for her pride. Because that transformation is the mythological origin of the spider, the ancient Greeks used <em>Arachn&#x113;</em> as their very word for spider &mdash; and when eighteenth-century biologists named the class of eight-legged arthropods, they reached straight back to Ovid. Every time you say &ldquo;arachnid,&rdquo; you are remembering a Latin weaver who dared to compare herself to a goddess.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">12 min</span></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Now that you've read it once: which line of the passage felt hardest?</div>
+            <div class="widget-options">
+                <button data-response="Line 2 packs three passive verbs together (laudābātur, spectābantur, mīrābantur) — and one of them is the deponent. Reread it slowly with the glossary and it opens up.">Line 2 &mdash; all those passives at once</button>
+                <button data-response="Line 5 mixes a real passive (audīta sunt, laudātur) with the reported-speech feel of fertur. Treat fertur as &lsquo;is reported&rsquo; and it settles.">Line 5 &mdash; the boast spreading</button>
+                <button data-response="Line 8 ends on the preview form audītūra erat (&lsquo;was about to hear&rsquo;) — that's a Module 06 look-ahead, so don't worry if it felt new. The glossary carries you.">Line 8 &mdash; the ending</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the story, some test your Latin reading. Take them slowly; the point is to prove you can both read the sentences and follow the tale.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">What is Arachne famous for?</div>
+            <div class="widget-options">
+                <button data-correct="true">her weaving</button>
+                <button data-correct="false">her sailing</button>
+                <button data-correct="false">her singing</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">Whom does Arachne dare to compare herself to?</div>
+            <div class="widget-options">
+                <button data-correct="false">Venus</button>
+                <button data-correct="true">Minerva</button>
+                <button data-correct="false">Juno</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the tense</div>
+            <div class="widget-question">In line 2, <span class="lat">spect&#x101;bantur</span> is which tense and voice?</div>
+            <div class="widget-options">
+                <button data-correct="false">present passive</button>
+                <button data-correct="true">imperfect passive</button>
+                <button data-correct="false">future passive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the deponent</div>
+            <div class="widget-question">In line 2, <span class="lat">m&#x12B;r&#x101;bantur</span> is best translated as&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">(they) marveled at &mdash; deponent, active meaning</button>
+                <button data-correct="false">(they) were marveled at</button>
+                <button data-correct="false">(they) will marvel at</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; etymology</div>
+            <div class="widget-question">The English word <em>arachnid</em> comes from&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">a Roman river god</button>
+                <button data-correct="false">a Greek city</button>
+                <button data-correct="true">Arachne the weaver</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">One more: find the one <strong>future passive</strong> verb in the passage. Name it and translate it, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><span class="lat">mov&#x113;bitur</span> (line 6) &mdash; <strong>&ldquo;will be moved.&rdquo;</strong> It is 2nd conjugation future passive: stem <span class="lat">mov&#x113;-</span> + future sign <span class="lat">-bi-</span> + passive ending <span class="lat">-tur</span>. The companions warn that the goddess <em>will not be moved</em> (<span class="lat">n&#x14D;n mov&#x113;bitur</span>) by a mortal's glory.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 5.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole week together with mixed practice &mdash; then you're ready for the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the Arachne story in three sentences &mdash; and use the words <span class="lat">ars</span>, <span class="lat">f&#x101;ma</span>, and <span class="lat">gl&#x14D;ria</span> at least once.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ LATIN TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real Latin, a real story, and passive verbs that finally carry meaning across eight lines. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 5.04 &middot; Reading &mdash; Arachn&#x113; Superba</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (or check the word endings) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

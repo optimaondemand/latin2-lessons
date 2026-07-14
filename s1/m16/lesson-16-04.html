@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 16.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .sentence .ln { color:#9a7b1e; font-size:13px; font-style:normal; margin-right:8px; font-weight:700; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FFFDF8; border:1px solid #E4C9A8; border-top:3px solid #C7922C; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .passage .s-lat { font-style:italic; color:#0E1C42; font-size:17px; line-height:1.9; }
+    .glossbox { background:#F4F9FC; border:1px solid #D0D9E8; border-radius:6px; padding:12px 16px; font-size:14px; color:#41506e; line-height:1.7; margin-top:12px; }
+    .glossbox strong { color:#0e1c42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 16</div>
+        <div style="font-size: 12px; color: #666;">I&#333;, II &mdash; Semester 1 Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 16.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; I&#333; Aegyptum Pervenit</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Toward Egypt &mdash; I&#333; becomes Isis</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 16.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Latin &mdash; I&#333; Reaches Egypt</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Four cards, one passage. Today the whole semester works at once.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">This is the <strong>longest passage of the semester</strong> &mdash; ten sentences, with longer constructions than earlier modules. Every grammatical structure from S1 appears: passive tenses, participial phrases (PPP, PAP, and FAP), and agent constructions. Read carefully, identify every form, and translate completely. This passage is the model for the final-exam translation section &mdash; and for tomorrow's graded Translation Assignment.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate a ten-sentence Latin passage using all S1 grammar.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain how and why the Romans identified I&#333; with the goddess Isis.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">I&#333; Aegyptum Pervenit</span></h3>
+        <p style="font-size: 15px; color: #6b7a99; margin: 0 0 8px 0;">After Ovid, <em>Metamorph&#333;s&#275;s</em> I &mdash; Adapted for Latin 2</p>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 8px 0;">Read each line aloud first. Find the subject and verb, spot every participle and passive form, then translate. The glossary below the passage supports the harder words.</p>
+        <div class="passage">
+            <div class="s-lat"><span class="ln">1</span>I&#333;, &#257; I&#363;n&#333;ne odi&#333; habit&#257;, per mult&#257;s terr&#257;s asil&#333; vex&#257;b&#257;tur, neque qui&#275;tem inven&#299;re poterat.</div>
+            <div class="s-lat"><span class="ln">2</span>Dea saeva, I&#333;nem semper persequ&#275;ns, asilum m&#299;serat ut nympha miseranda numquam qui&#275;sceret.</div>
+            <div class="s-lat"><span class="ln">3</span>I&#333;, per mont&#275;s silv&#257;sque agit&#257;ta, ad l&#299;tus maris perv&#275;nit, ubi undae magnae audi&#275;bantur.</div>
+            <div class="s-lat"><span class="ln">4</span>Ibi in herb&#257; iac&#275;ns, I&#333; ad caelum ocul&#333;s su&#333;s sustulit et Iovem lacrim&#299;s &#333;r&#257;vit.</div>
+            <div class="s-lat"><span class="ln">5</span>Iuppiter, I&#333;nem gementem in terr&#257; pr&#333;str&#257;tam vid&#275;ns, I&#363;n&#333;nem &#333;r&#257;re coepit.</div>
+            <div class="s-lat"><span class="ln">6</span>Iuppiter I&#363;n&#333;n&#299; pr&#333;m&#299;sit: &ldquo;I&#333; numquam &#257; m&#275; am&#257;bitur; d&#257; e&#299; f&#333;rmam suam.&rdquo;</div>
+            <div class="s-lat"><span class="ln">7</span>I&#363;n&#333;, &#257; Iove reconcili&#257;ta, tandem c&#333;ns&#275;nsit: m&#363;nus cl&#275;menti&#257;e Iov&#299; datum est.</div>
+            <div class="s-lat"><span class="ln">8</span>I&#333;, in f&#333;rmam suam restit&#363;ta, exsult&#257;vit: v&#333;x h&#363;m&#257;na et corpus pulchrum e&#299; reddita sunt.</div>
+            <div class="s-lat"><span class="ln">9</span>In Aegyptum perducta, I&#333; r&#275;g&#299;na eius terrae &#257; popul&#333; appell&#257;b&#257;tur.</div>
+            <div class="s-lat"><span class="ln">10</span>Postr&#275;m&#333; I&#333; dea facta, Isis appell&#257;ta est: nunc in &#257;r&#299;s Aegypt&#299; &#257; mult&#299;s popul&#299;s colitur et laud&#257;tur.</div>
+        </div>
+        <div class="glossbox">
+            <strong>Glossary:</strong>&nbsp;
+            <span class="lat">odi&#333; habit&#257;</span> &mdash; held in hatred (idiom: <span class="lat">odio habere</span> = to hate) &middot;
+            <span class="lat">qui&#275;tem</span> &mdash; rest, peace (acc. sg. of <span class="lat">qui&#275;s, qui&#275;tis</span>) &middot;
+            <span class="lat">persequ&#275;ns</span> &mdash; pursuing relentlessly (PAP nom. sg. f. of <span class="lat">persequor</span>) &middot;
+            <span class="lat">miseranda</span> &mdash; pitiable, to be pitied (gerundive used as adjective) &middot;
+            <span class="lat">qui&#275;sceret</span> &mdash; might rest (subjunctive in a purpose clause &mdash; note for S2) &middot;
+            <span class="lat">agit&#257;ta</span> &mdash; driven, harried (PPP nom. sg. f. of <span class="lat">agit&#333;</span>) &middot;
+            <span class="lat">iac&#275;ns</span> &mdash; lying (PAP nom. sg. f. of <span class="lat">iace&#333;</span>) &middot;
+            <span class="lat">sustulit</span> &mdash; raised, lifted (perfect of <span class="lat">toll&#333;</span>) &middot;
+            <span class="lat">lacrim&#299;s</span> &mdash; with tears (instrumental ablative) &middot;
+            <span class="lat">gementem</span> &mdash; groaning (PAP acc. sg. f. of <span class="lat">gem&#333;</span>) &middot;
+            <span class="lat">pr&#333;str&#257;tam</span> &mdash; prostrated, thrown down (PPP acc. sg. f. of <span class="lat">pr&#333;stern&#333;</span>) &middot;
+            <span class="lat">coepit</span> &mdash; began (perfect of <span class="lat">coep&#299;</span>) &middot;
+            <span class="lat">reconcili&#257;ta</span> &mdash; having been reconciled (PPP nom. sg. f. of <span class="lat">reconcili&#333;</span>) &middot;
+            <span class="lat">tandem</span> &mdash; at last, finally &middot;
+            <span class="lat">cl&#275;menti&#257;e</span> &mdash; of mercy, clemency (gen. sg. of <span class="lat">cl&#275;mentia</span>) &middot;
+            <span class="lat">exsult&#257;vit</span> &mdash; rejoiced, leapt for joy (perfect of <span class="lat">exsult&#333;</span>) &middot;
+            <span class="lat">reddita sunt</span> &mdash; were restored, were given back (perfect passive of <span class="lat">redd&#333;</span>) &middot;
+            <span class="lat">perducta</span> &mdash; having been led (PPP nom. sg. f. of <span class="lat">perd&#363;c&#333;</span>) &middot;
+            <span class="lat">appell&#257;b&#257;tur</span> &mdash; was called, was named (imperfect passive of <span class="lat">appell&#333;</span>) &middot;
+            <span class="lat">postr&#275;m&#333;</span> &mdash; finally, at last &middot;
+            <span class="lat">&#257;r&#299;s</span> &mdash; altars (dat./abl. pl. of <span class="lat">&#257;ra, -ae</span>) &middot;
+            <span class="lat">colitur</span> &mdash; is worshipped, is honored (present passive of <span class="lat">col&#333;</span>)
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; CULTURAL READING <span class="pill-time">8 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; ISIS AND I&#332;</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">The identification of I&#333; with the Egyptian goddess <strong>Isis</strong> was a real feature of Greco-Roman religious thought, not just an Ovidian invention. Both figures were associated with the moon, with wandering, and with transformation. The cow was sacred to Isis, which made the parallel easy to draw. By the time Ovid was writing (late 1st century BCE / early 1st century CE), the cult of Isis had spread throughout the Roman world and was one of the most popular mystery religions in Italy. For Roman readers, the final lines of I&#333;'s story would have carried genuine religious resonance.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the grammar, some on the story. Take them slowly; the point is to prove you can both parse the forms and follow the tale. Wrong answers give a hint; use Reset to try again.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; agent construction</div>
+            <div class="widget-question">In line 1, <span class="lat">&#257; I&#363;n&#333;ne odi&#333; habit&#257;</span>, the phrase <span class="lat">&#257; I&#363;n&#333;ne</span> expresses&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">a personal agent (<span class="lat">&#257;/ab</span> + abl.)</button>
+                <button data-correct="false">an instrument (plain abl.)</button>
+                <button data-correct="false">a direct object</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question">In line 4, <span class="lat">iac&#275;ns</span> (&ldquo;lying&rdquo;) is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">PPP</button>
+                <button data-correct="true">PAP</button>
+                <button data-correct="false">FAP</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the participle</div>
+            <div class="widget-question">In line 9, <span class="lat">perducta</span> (&ldquo;having been led&rdquo;) is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">PAP</button>
+                <button data-correct="false">FAP</button>
+                <button data-correct="true">PPP</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">What finally persuades Juno to relent?</div>
+            <div class="widget-options">
+                <button data-correct="false">I&#333; escapes to Egypt on her own</button>
+                <button data-correct="true">Jupiter promises that I&#333; will never be loved by him</button>
+                <button data-correct="false">the gadfly dies</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">By the end of the passage, I&#333; is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">still wandering as a cow</button>
+                <button data-correct="false">imprisoned by Juno</button>
+                <button data-correct="true">worshipped in Egypt as the goddess Isis</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Label each bolded form, then reveal. <strong>(1)</strong> I&#333;, <u>&#257; I&#363;n&#333;ne vex&#257;ta</u>, per terr&#257;s err&#257;bat. &nbsp;<strong>(2)</strong> Iuppiter, <u>I&#333;nem vid&#275;ns</u>, I&#363;n&#333;nem &#333;r&#257;re coepit. &nbsp;<strong>(3)</strong> I&#333;, <u>in f&#333;rmam suam restit&#363;ta</u>, r&#275;g&#299;na Aegypt&#299; erat.</p>
+            <button class="reveal-btn">Reveal answers</button>
+            <div class="reveal-body">
+                <strong>1.</strong> <em>Io, tormented by Juno, was wandering through the lands.</em> &mdash; <span class="lat">vex&#257;ta</span> is PPP nom. sg. f.; <span class="lat">&#257; I&#363;n&#333;ne</span> = personal agent construction.<br>
+                <strong>2.</strong> <em>Jupiter, seeing Io, began to plead with Juno.</em> &mdash; <span class="lat">vid&#275;ns</span> is PAP nom. sg. m. of <span class="lat">vide&#333;</span>, simultaneous with <span class="lat">coepit</span>.<br>
+                <strong>3.</strong> <em>Io, restored to her own form, was queen of Egypt.</em> &mdash; <span class="lat">restit&#363;ta</span> is PPP nom. sg. f. of <span class="lat">restitu&#333;</span>, action completed before <span class="lat">erat</span>.
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128173; PART 4 &middot; QUICK CHECK-IN <span class="pill-time">2 min</span></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">After one careful pass through the passage, how does it feel?</div>
+            <div class="widget-options">
+                <button data-response="Excellent — read it once more aloud tonight for fluency, then you are ready for tomorrow's mixed practice and the graded Translation Assignment.">I can read most of it on my own</button>
+                <button data-response="That is exactly what the glossary and the four cards are for. Reread line by line, using Cards 1–4 to name each form, and the passage will open up. You have three more days before the assignment is due.">Some sentences are still dense</button>
+                <button data-response="Good honesty. Focus on the participial phrases first — find the participle, its noun, its time — and the rest of each sentence tends to fall into place. Try again after a short break.">The long participial phrases trip me up</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 16.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole semester together with mixed practice &mdash; then you're ready for the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell I&#333;'s ending in three sentences &mdash; and name at least one PPP, one PAP, and one agent construction you found in the passage.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ THE SEMESTER'S LONGEST PASSAGE</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Ten sentences, every S1 form, one tragic-then-triumphant story &mdash; and you followed it. One more day of practice and the module, and the semester's grammar, are yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 16.04 &middot; Reading &mdash; I&#333; Aegyptum Pervenit</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (or check the glossary and cards) and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

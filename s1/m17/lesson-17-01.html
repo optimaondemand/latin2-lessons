@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 17.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .nextlist .row { display:flex; align-items:flex-start; gap:14px; margin-bottom:16px; }
+    .nextlist .n { min-width:34px; height:34px; border-radius:50%; background:#0E1C42; color:#fff; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .nextlist .pts { display:inline-block; background:#5A2A82; color:#fff; font-size:12px; border-radius:12px; padding:2px 9px; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 17</div>
+        <div style="font-size: 12px; color: #666;">F&#299;n&#257;l&#275;s &mdash; Final Assessment</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 17.01 &middot; Day 1 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">What finals week is</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Ovid &amp; Transformation</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 17.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> F&#299;n&#257;l&#275;s &mdash; The Map of the Semester</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 35 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">This is finals week. There is nothing new to learn &mdash; only a whole semester to gather back up.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Module 17 is the capstone of Latin 2, Semester 1. It contains <strong>no new grammar, no new vocabulary, and no new instruction</strong> &mdash; this week you review everything from Modules 1&ndash;16 and complete the two final assessments. Today's page is your map: what the semester covered, what you'll be graded on, and how the next four review days are laid out. By the end of the week you will sit the <strong>S1 Final Exam</strong> and submit an original <strong>Transformation Story</strong> in Latin.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> name the three grammar pillars this semester built &mdash; the passive voice, the participles, and the agent construction.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> describe both final assessments &mdash; the S1 Final Exam and the Transformation Story &mdash; and what each requires.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> plan my finals week using the review days ahead.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; LOOK HOW FAR YOU'VE COME <span class="pill-time">6 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">A whole semester of Latin</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Latin 1 taught you to make sentences <em>act</em>. This semester taught you to let things be <em>acted upon</em> &mdash; and to fold whole clauses into single words. Everything on the final grew out of three big moves:</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4>What Latin 1 gave you</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">The <strong>active voice</strong> &mdash; a subject doing something.<br><span class="lat">Perseus m&#333;nstrum necat.</span><br><span style="color:#6b7a99;font-size:14px;">Perseus kills the monster.</span></div>
+            </div>
+            <div class="col b">
+                <h4>What Semester 1 added</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">The <strong>passive voice</strong> &mdash; a subject <em>receiving</em> the action.<br><span class="lat">M&#333;nstrum &#257; Perse&#333; nec&#257;tur.</span><br><span style="color:#6b7a99;font-size:14px;">The monster is killed by Perseus.</span></div>
+            </div>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Looking back over the whole semester, which piece do you feel <em>most</em> like reviewing this week?</div>
+            <div class="widget-options">
+                <button data-response="Good call. The six passive tenses are the spine of the semester and the biggest single block on the final — Day 2 walks through all of them in one place.">The six passive tenses</button>
+                <button data-response="Smart focus. The three participles pack a whole clause into one word, and they trip up a lot of students. Day 3 lays out all three side by side.">The three participles</button>
+                <button data-response="A wise thing to shore up. Agent vs. means is a small rule that changes a whole translation — we drill it on Day 2 alongside the passive.">Agent vs. means (the &ldquo;by&rdquo; problem)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; WHAT THE FINAL COVERS <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The three grammar pillars &mdash; and the vocabulary</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The S1 Final Exam is cumulative over Modules 1&ndash;16. Everything it tests fits under three grammar pillars plus your vocabulary:</p>
+        <table class="gtable">
+            <thead><tr><th>Pillar</th><th>What it is</th><th>Reviewed on</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Passive voice</strong></td><td>All six tenses: present, imperfect, future, perfect, pluperfect, future perfect</td><td>Day 2</td></tr>
+                <tr><td><strong>The participles</strong></td><td>Three of them: PPP (perfect passive), PAP (present active), FAP (future active)</td><td>Day 3</td></tr>
+                <tr><td><strong>Agent construction</strong></td><td><span class="lat">&#257;/ab</span> + ablative for a person; plain ablative for a thing (means)</td><td>Day 2</td></tr>
+                <tr><td><strong>Vocabulary</strong></td><td>Cumulative words from every module, M01&ndash;M16</td><td>All week &middot; Vocabulary Review</td></tr>
+            </tbody>
+        </table>
+        <div class="etym-box">
+            <div class="lbl">&#128161; EXAM PREP TIPS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">Focus your study on the pillars above. Pay special attention to <strong>all six passive tenses</strong>, the <strong>three participles</strong> (their formation, voice, time, and translation), and <strong>agent vs. means</strong> (<span class="lat">&#257;/ab</span> + ablative for personal agent; plain ablative for the instrument or means).</p>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Reread your <strong>Grammar Quiz corrections</strong> from every module &mdash; exam items are similar in format &mdash; and expect cumulative vocabulary from all sixteen modules.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; THE TWO ASSESSMENTS <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">What you will be graded on</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 12px 0;">Finals week has two graded pieces. Both are due before the end of Week 36 &mdash; check Canvas for exact dates and submission links.</p>
+
+        <div class="culture-box">
+            <div class="lbl">&#128221; ASSESSMENT 1 &middot; S1 FINAL EXAM &middot; 100 PTS &middot; AUTO-GRADED</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">A comprehensive auto-graded exam covering all grammar from M01&ndash;M16: the complete passive voice system (all six tenses), the three participles (PPP, PAP, and FAP), agent construction, and cumulative vocabulary from the entire semester. Check Canvas for the exam availability window; there is no fixed time limit listed here.</p>
+        </div>
+
+        <div class="virtue-box">
+            <div class="lbl">&#9998; ASSESSMENT 2 &middot; TRANSFORMATION STORY &middot; 100 PTS &middot; TEACHER-REVIEWED</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">A creative writing project. Write an original myth in Latin (minimum 8 sentences) using at least one transformation as the central event. Your story must include at least two examples of the passive voice and at least one participial phrase.</p>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The full rubric is available in Canvas under S1 Syllabus. We plan the story in detail on Day 4, right after the myth review.</p>
+        </div>
+
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:14px 0 6px;">Check yourself on the shape of finals week &mdash; five quick recall reps. Wrong answers give a hint; use Reset to try again.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the exam</div>
+            <div class="widget-question">The S1 Final Exam covers grammar from which modules?</div>
+            <div class="widget-options">
+                <button data-correct="false">only Module 16</button>
+                <button data-correct="false">only the passive-voice modules</button>
+                <button data-correct="true">all modules, M01&ndash;M16</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; how it's scored</div>
+            <div class="widget-question">How is the S1 Final Exam graded?</div>
+            <div class="widget-options">
+                <button data-correct="true">automatically (auto-graded)</button>
+                <button data-correct="false">by hand, with a rubric</button>
+                <button data-correct="false">by a classmate</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the story</div>
+            <div class="widget-question">What is the minimum length of the Transformation Story?</div>
+            <div class="widget-options">
+                <button data-correct="false">4 sentences</button>
+                <button data-correct="true">8 sentences</button>
+                <button data-correct="false">2 paragraphs of English</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; story requirements</div>
+            <div class="widget-question">Besides a transformation, your story must include at least&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">two English footnotes</button>
+                <button data-correct="true">two passive verbs and one participial phrase</button>
+                <button data-correct="false">three questions and an answer</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the three pillars</div>
+            <div class="widget-question">Which set names the three grammar pillars of the semester?</div>
+            <div class="widget-options">
+                <button data-correct="true">passive voice, participles, agent construction</button>
+                <button data-correct="false">nouns, adjectives, adverbs</button>
+                <button data-correct="false">present, imperfect, and future active only</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Before you move on: in one breath, name the two things you must complete this week to finish Latin 2, Semester 1. Say them out loud, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">The <strong>S1 Final Exam</strong> (auto-graded, cumulative over M01&ndash;M16, 100 pts) and the <strong>Transformation Story</strong> (an original Latin myth, teacher-reviewed, 100 pts). Both are due before the end of Week 36.</div>
+        </div>
+    </div>
+
+    <!-- FINALS CHECKLIST -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128203; FINALS WEEK CHECKLIST</div>
+        <ul style="margin:0; padding-left:20px; font-size:16px; color:#1a2340; line-height:1.7;">
+            <li>Work through the four review days (this page plus Lessons 17.02&ndash;17.05).</li>
+            <li>Complete the <strong>S1 Final Exam</strong> in Canvas during the exam availability window.</li>
+            <li>Submit your <strong>Transformation Story</strong> in the Canvas assignment by the deadline.</li>
+            <li>Review all Module Grammar Quizzes and vocabulary sets as preparation.</li>
+            <li>Contact your facilitator if you have questions about the rubric or exam format.</li>
+        </ul>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 17.02</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you review the spine of the semester &mdash; the <strong>passive voice in all six tenses</strong>, plus the agent construction that answers &ldquo;by whom?&rdquo; and &ldquo;by what?&rdquo;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas so your progress is recorded. Then, in your own words, answer out loud: <em>what are the two final assessments, and what are the three grammar pillars they test?</em></div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FINISH LINE IS IN SIGHT</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You have a map, a checklist, and four review days to gather the whole semester back up. Tomorrow the passive voice. <em>Ad cr&#257;stinum!</em> &mdash; until tomorrow!</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 17.01 &middot; What finals week is</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that’s the shape of finals week.'
+        : 'Not quite — reread the section above and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

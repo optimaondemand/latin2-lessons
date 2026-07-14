@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 2 &mdash; Lesson 12.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 2 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 12</div>
+        <div style="font-size: 12px; color: #666;">The Present Active Participle in Phrases</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 12.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Attributive vs. circumstantial</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Actaeon &amp; Ovid's <em>Metamorph&omacr;s&emacr;s</em></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 12.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Two Jobs, One Agreement Rule</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you met the two jobs. Today you learn the rules that tell them apart &mdash; and see the full agreement chart.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Three rules run this module. <strong>(1)</strong> The attributive PAP modifies a noun directly. <strong>(2)</strong> The circumstantial PAP anchors a verbal phrase. <strong>(3)</strong> Because the PAP is still a verb, it can take its own direct object inside that phrase. Under all three sits one unbreakable rule you already know: the PAP agrees with its noun in <em>case, number, and gender</em>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> distinguish the attributive PAP from the circumstantial PAP.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> spot the PAP's own direct object inside a participial phrase.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> make the PAP agree with a noun in any case, number, and gender.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday's two jobs</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: what are the two jobs a present active participle can do in a Latin sentence?</div>
+            <div class="widget-options">
+                <button data-response="Yes — attributive (modifying a noun directly) and circumstantial (anchoring a phrase of how, when, or why). Today we sharpen the line between them.">Attributive and circumstantial</button>
+                <button data-response="No worries — the two are the attributive use (the PAP just describes a noun, like an adjective) and the circumstantial use (the PAP anchors a whole phrase set off by commas). Let's lock them in now.">Not sure yet</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE THREE RULES <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Rule 1 &mdash; the attributive use</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">In the <strong>attributive</strong> use, the PAP sits beside its noun exactly as an adjective does. It describes a characteristic action of that noun. Agreement rule: the PAP matches its noun in <strong>case, number, and gender</strong>.</p>
+        <div class="sentence"><span class="s-lat">canis curr<span class="ending">&emacr;ns</span></span><p class="parse">the running dog (nom. sg. m/f) &mdash; <span class="lat">curr&emacr;ns</span> works exactly like the adjective <span class="lat">magnus</span> in <span class="lat">canis magnus</span>.</p></div>
+        <div class="sentence"><span class="s-lat">v&emacr;n&amacr;tor trem<span class="ending">&emacr;ns</span></span><p class="parse">the trembling hunter (nom. sg. m) &mdash; a pure adjective-equivalent; no comma, no phrase.</p></div>
+
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 18px 0 8px 0;">Rule 2 &mdash; the circumstantial use</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">In the <strong>circumstantial</strong> use, the PAP introduces a short verbal phrase that explains the circumstances of the main verb &mdash; <em>how, when,</em> or <em>why</em>. The subject of the phrase is the noun the PAP modifies, and the phrase is usually set apart by commas.</p>
+        <div class="sentence"><span class="s-lat">Actae&omacr;n, clam&omacr;rem n&omacr;n audi<span class="ending">&emacr;ns</span>, f&umacr;git.</span><p class="parse">Actaeon, not hearing the shout, fled. &mdash; <span class="lat">audi&emacr;ns</span> anchors a phrase; its subject is Actaeon.</p></div>
+        <div class="sentence"><span class="s-lat">Can&emacr;s, cervum vid<span class="ending">&emacr;nt&emacr;s</span>, cucurr&emacr;runt.</span><p class="parse">The dogs, seeing the stag, ran. &mdash; the phrase explains why they ran.</p></div>
+
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 18px 0 8px 0;">Rule 3 &mdash; the PAP keeps its own object</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Because the PAP is a <em>verb</em> form as well as an adjective, it can govern its own accusative direct object. That object belongs to the participle, not to the main verb &mdash; do not confuse them.</p>
+        <div class="sentence"><span class="s-lat">Actae&omacr;n, <strong>D&imacr;anam</strong> vid&emacr;ns, timuit.</span><p class="parse">Actaeon, seeing <strong>Diana</strong>, feared. &mdash; <span class="lat">D&imacr;anam</span> is the object of <span class="lat">vid&emacr;ns</span>, not of <span class="lat">timuit</span>.</p></div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE QUICK TEST</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Is the PAP fenced off by commas and does it have its own object or adverb? &rarr; <strong>circumstantial</strong>. Is it sitting bare beside a single noun with nothing else attached? &rarr; <strong>attributive</strong>.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE AGREEMENT CHART <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">One PAP, every case</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Here is the PAP of <span class="lat">curr&omacr;</span> agreeing with various nouns. Watch the ending shift to match the noun's case, number, and gender &mdash; and note the neuter plural form <span class="lat">-entia</span>.</p>
+        <table class="gtable">
+            <thead><tr><th>Case / Number</th><th>Form</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>nom. sg. m/f</td><td><span class="lat">canis curr<span class="ending">&emacr;ns</span></span></td><td>the running dog (subject)</td></tr>
+                <tr><td>acc. sg. m/f</td><td><span class="lat">canem curr<span class="ending">entem</span></span></td><td>the running dog (direct object)</td></tr>
+                <tr><td>nom. pl. m/f</td><td><span class="lat">can&emacr;s curr<span class="ending">ent&emacr;s</span></span></td><td>the running dogs (subject)</td></tr>
+                <tr><td>nom. sg. n</td><td><span class="lat">animal curr<span class="ending">&emacr;ns</span></span></td><td>the running animal (neut.)</td></tr>
+                <tr><td>acc. pl. n</td><td><span class="lat">anim&amacr;lia curr<span class="ending">entia</span></span></td><td>the running animals (neut.)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; TRAIN YOUR EYE <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps &mdash; identify the use, then match the agreement. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which use?</div>
+            <div class="widget-question">In <span class="lat">Actae&omacr;n, fugi&emacr;ns, tim&emacr;bat</span>, the highlighted PAP <span class="lat">fugi&emacr;ns</span> is used&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">circumstantially</button>
+                <button data-correct="false">attributively</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which use?</div>
+            <div class="widget-question">In <span class="lat">Canis curr&emacr;ns Actae&omacr;nem inv&emacr;nit</span>, the PAP <span class="lat">curr&emacr;ns</span> is used&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">circumstantially</button>
+                <button data-correct="true">attributively</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; find the object</div>
+            <div class="widget-question">In <span class="lat">Actae&omacr;n, D&imacr;anam vid&emacr;ns, timuit</span>, what is <span class="lat">D&imacr;anam</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">the object of <span class="lat">timuit</span></button>
+                <button data-correct="false">the subject of the phrase</button>
+                <button data-correct="true">the direct object of the PAP <span class="lat">vid&emacr;ns</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; make it agree</div>
+            <div class="widget-question">To say &ldquo;the running dogs&rdquo; as the <strong>subject</strong> (nom. pl.), which form of the PAP fits <span class="lat">can&emacr;s</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">currentem</span></button>
+                <button data-correct="true"><span class="lat">current&emacr;s</span></button>
+                <button data-correct="false"><span class="lat">curr&emacr;ns</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; make it agree</div>
+            <div class="widget-question">To modify <span class="lat">anim&amacr;lia</span> (neut. acc. pl., &ldquo;animals&rdquo;), the PAP &ldquo;running&rdquo; becomes&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">currentia</span></button>
+                <button data-correct="false"><span class="lat">current&emacr;s</span></button>
+                <button data-correct="false"><span class="lat">currentem</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first: in <span class="lat">Can&emacr;s, cervum vid&emacr;nt&emacr;s, latr&amacr;bant</span>, name the PAP's use, its subject, and its own object. Say your answer, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><span class="lat">vid&emacr;nt&emacr;s</span> is a <strong>circumstantial</strong> PAP (nom. pl., set off by commas). Its <strong>subject</strong> is <span class="lat">can&emacr;s</span> (the dogs, nom. pl., with which it agrees). Its own <strong>direct object</strong> is <span class="lat">cervum</span> (the stag, acc. sg.). The whole phrase explains why the dogs were barking.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 12.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the module's eight new words and learn the <em>three translation strategies</em> &mdash; simultaneous, causal, and temporal &mdash; for turning a participial phrase into natural English.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite the five-row agreement chart out loud &mdash; <span class="lat">curr&emacr;ns, currentem, current&emacr;s, curr&emacr;ns (n.), currentia</span>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE RULES ARE SET</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Attributive, circumstantial, and a participle that keeps its own object &mdash; all resting on one agreement rule. Tomorrow you learn to say these phrases in real English.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 2 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 12.02 &middot; Attributive vs. circumstantial</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you applied the rule accurately.'
+        : 'Not quite — recheck the commas, the object, and the noun endings, then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
